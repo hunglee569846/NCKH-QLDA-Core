@@ -12,6 +12,7 @@ namespace NCKH.Core.Domain.IRepository
         Task<int> InsertAsync(BoMon bomon);
         Task<int> UpdateAsync(string MaBoMon, BoMon bomon);
         Task<int> DeleteAsync(string IdBomon, string TenBM);
+
         Task<bool> CheckExitsFacult(string IdFacult);
 
     }
