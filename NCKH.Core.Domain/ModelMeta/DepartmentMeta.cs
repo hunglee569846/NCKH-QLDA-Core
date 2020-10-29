@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace NCKH.Core.Domain.ModelMeta
 {
-    public class BoMonMeta
+    public class DepartmentMeta
     {
-        public string MaBoMon { get; set; }
-        public string TenBoMon { get; set; }
+        public string IdDepartment { get; set; }
+        public string NameDepartment { get; set; }
         public string IdFaculty { get; set; }
     }
 }

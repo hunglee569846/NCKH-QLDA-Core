@@ -12,72 +12,73 @@ using System.Threading.Tasks;
 
 namespace NCKH.Core.Infrastructure.Repository
 {
-    public class BoMonRepository : IBoMonRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly string _ConnectioString;
-        private readonly ILogger<BoMonRepository> _logger;
-        public BoMonRepository(string ConnectionString,
-                                ILogger<BoMonRepository> logger)
+        private readonly ILogger<DepartmentRepository> _logger;
+        public DepartmentRepository(string ConnectionString,
+                                ILogger<DepartmentRepository> logger)
         {
             _logger = logger;
             _ConnectioString = ConnectionString;
         }
-        public async Task<List<BoMonViewModel>> SelectAllAsync()
+        public async Task<List<DepartmentViewModel>> SelectAllAsync()
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
-                var Result = await conn.QueryAsync<BoMonViewModel>("spSelectAllBoMon");
+                var Result = await conn.QueryAsync<DepartmentViewModel>("[spSelectAllDepartment]");
                 return Result.ToList();
             }
         }
-        public async Task<BoMonViewModel> SelectByIdAsync(string MaBM, string TenBM)
+        public async Task<DepartmentViewModel> SelectByIdAsync(string IdDepartment, string NameDepartment)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
-                para.Add("@MaBoMon", MaBM);
-                para.Add("@TenBoMon", TenBM);
-                var Code = await conn.QuerySingleOrDefaultAsync<BoMonViewModel>("spSelectByIdBomon", para, commandType: CommandType.StoredProcedure);
+                para.Add("@MaBoMon", IdDepartment);
+                para.Add("@TenBoMon", NameDepartment);
+                var Code = await conn.QuerySingleOrDefaultAsync<DepartmentViewModel>("spSelectByIdDepartment", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }
 
-        public async Task<int> InsertAsync(BoMon bomon)
+        public async Task<int> InsertAsync(Department department)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
-                para.Add("@MaBoMon", bomon.MaBoMon);
-                para.Add("@TenBoMon", bomon.TenBoMon);
-                para.Add("@IdFaculty", bomon.IdFaculty);
-                para.Add("@CreatDate", bomon.CreateDate);
-                para.Add("@IsDelete", bomon.IsDelete);
-                para.Add("@IsActive", bomon.IsActive);
-                if (bomon.LastUpdate != null && bomon.LastUpdate != DateTime.MinValue)
+                para.Add("@MaBoMon", department.IdDepartment);
+                para.Add("@TenBoMon", department.NameDepartment);
+
+                para.Add("@IdFaculty", department.IdFaculty);
+                para.Add("@CreatDate", department.CreateDate);
+                para.Add("@IsDelete", department.IsDelete);
+                para.Add("@IsActive", department.IsActive);
+                if (department.LastUpdate != null && department.LastUpdate != DateTime.MinValue)
                 {
-                    para.Add("@LastUpdate", bomon.LastUpdate);
+                    para.Add("@LastUpdate", department.LastUpdate);
                 }
-                var Code = await conn.ExecuteAsync("spInsertBoMon", para, commandType: CommandType.StoredProcedure);
+                var Code = await conn.ExecuteAsync("[spInsertDepartment]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }
-        public async Task<int> UpdateAsync(string MaBoMon, BoMon bomon)
+        public async Task<int> UpdateAsync(string IdDepartment, Department department)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
-                para.Add("@MaBoMon", MaBoMon);
-                para.Add("@TenBoMon", bomon.TenBoMon);
-                para.Add("@IdFaculty", bomon.IdFaculty);
-                var Code = await conn.ExecuteAsync("spUpdateBomon", para, commandType: CommandType.StoredProcedure);
+                para.Add("@MaBoMon", IdDepartment);
+                para.Add("@TenBoMon", department.NameDepartment);
+                para.Add("@IdFaculty", department.IdFaculty);
+                var Code = await conn.ExecuteAsync("[spUpdateDepartment]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }
@@ -90,7 +91,7 @@ namespace NCKH.Core.Infrastructure.Repository
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@MaBoMon", IdBomon);
                 para.Add("@TenBoMon", TenBM);
-                var Code = await conn.ExecuteAsync("spDeleteBomon", para, commandType: CommandType.StoredProcedure);
+                var Code = await conn.ExecuteAsync("spDeleteDepartment", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }

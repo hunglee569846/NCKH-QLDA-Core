@@ -17,9 +17,9 @@ namespace NCKH.Core.Infrastructure.Services
             _studentRepository = studentRepository;
 
         }
-        public async Task<StudentDetailViewmodel> SelectById(string IdStudent)
+        public async Task<StudentDetailViewmodel> SelectById(string IdStudent, string NameStudent)
         {
-            return await _studentRepository.SelectByIdAsync(IdStudent);
+            return await _studentRepository.SelectByIdAsync(IdStudent, NameStudent);
 
         }
     }

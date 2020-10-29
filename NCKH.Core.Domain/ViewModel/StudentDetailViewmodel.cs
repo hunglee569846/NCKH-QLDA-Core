@@ -8,12 +8,14 @@ namespace NCKH.Core.Domain.ViewModel
     {
         public string IdStudent { get; set; }
         public string LastName { get; set; }
-        public string Namesinhvien { get; set; }
+        public string NameStudent { get; set; }
         public string IdClass { get; set; }
         public string ClassName { get; set; }
-        public string IdSpecialized { get; set; }
-        public string NameChuyenNganh { get; set; }
-        public string TenBM { get; set; }
+        public string IdEducationProgram { get; set; }
+        public string PhoneNumber { get; set; }
+        public string NameSpecialized { get; set; }
+        public string NameIndustry { get; set; }
+        public string NameDepartment { get; set; }
         public string NameFaculty { get; set; }
     }
 }

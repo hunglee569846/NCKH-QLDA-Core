@@ -8,6 +8,6 @@ namespace NCKH.Core.Domain.IRepository
 {
     public interface IStudentRepository
     {
-        Task<StudentDetailViewmodel> SelectByIdAsync(string IdStudent);
+        Task<StudentDetailViewmodel> SelectByIdAsync(string IdStudent, string NameStudent);
     }
 }

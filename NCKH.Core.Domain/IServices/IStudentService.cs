@@ -8,6 +8,6 @@ namespace NCKH.Core.Domain.IServices
 {
     public interface IStudentService
     {
-        Task<StudentDetailViewmodel> SelectById(string IdStudent);
+        Task<StudentDetailViewmodel> SelectById(string IdStudent, string NameStudent);
     }
 }

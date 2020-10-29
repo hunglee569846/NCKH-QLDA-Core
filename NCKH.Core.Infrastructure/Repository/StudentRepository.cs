@@ -17,7 +17,7 @@ namespace NCKH.Core.Infrastructure.Repository
         {
             _ConnectioString = Connectionstring;
         }
-        public async Task<StudentDetailViewmodel> SelectByIdAsync(string IdStudent)
+        public async Task<StudentDetailViewmodel> SelectByIdAsync(string IdStudent, string NameStudent)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
@@ -25,7 +25,8 @@ namespace NCKH.Core.Infrastructure.Repository
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@IdStudent", IdStudent);
-                var Code = await conn.QuerySingleOrDefaultAsync<StudentDetailViewmodel>("spStudentDetailViewModel", para, commandType: CommandType.StoredProcedure);
+                para.Add("@NameStudent", NameStudent);
+                var Code = await conn.QuerySingleOrDefaultAsync<StudentDetailViewmodel>("[spSearchStudentDetail]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }

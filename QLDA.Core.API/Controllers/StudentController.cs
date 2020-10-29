@@ -22,11 +22,11 @@ namespace QLDA.Core.API.Controllers
             _studentService = studentService;
         }
 
-        [Route("GetById/{IdStudent}"), AcceptVerbs("GET")]
+        [Route(" GETbyIdNameStudent/IdStudent"), AcceptVerbs("GET")]
         [SwaggerOperation(Summary = "Get Student User", Description = "Requires login verification!", OperationId = "Select Student ", Tags = new[] { "Student" })]
-        public async Task<IActionResult> SelectById(string IdStudent)
+        public async Task<IActionResult> SelectById(string IdStudent,string NameStudent)
         {
-            var result = await _studentService.SelectById(IdStudent);
+            var result = await _studentService.SelectById(IdStudent, NameStudent);
             return Ok(result);
         }
     }
