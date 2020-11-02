@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using NCKH.QLDA.FileManagenment.API.Domain.IServices;
+using NCKH.QLDA.FileManagenment.API.Infrastructure.Services;
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace NCKH.QLDA.FileManagenment.API.Controllers
+{
+    [Produces("application/json")]
+    [Route("api/[Controller]")]
+    [SwaggerTag("Insert, Update, Delete, Get Detail, Search Folders")]
+    public class FileController : ControllerBase
+    {
+        private readonly IFileService _fileService;
+        //private readonly IFileService _fileService;
+        public FileController(IFileService fileservice)
+        {
+            _fileService = fileservice;
+        }
+        [Route("Insert/IdPath/FolderName/FolderId"), AcceptVerbs("GET")]
+        [SwaggerOperation(Summary = "Insert information File.", Description = "Requires login verification!", OperationId = "InsertFile", Tags = new[] { "File" })]
+        public async Task<IActionResult> SearchAsync(string IdFile, string FileName, int FolderId)
+        {
+            var result = await _fileService.SearchAsync(IdFile, FileName, FolderId);
+            return Ok(result);
+        }
+    }
+}

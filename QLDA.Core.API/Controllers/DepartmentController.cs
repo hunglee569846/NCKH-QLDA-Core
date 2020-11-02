@@ -37,9 +37,9 @@ namespace QLDA.Core.API.Controllers
 
         [AcceptVerbs("POST")]
         [SwaggerOperation(Summary = "Insert Department User", Description = "Requires login verification!", OperationId = "InsertBoMon", Tags = new[] { "Department" })]
-        public async Task<IActionResult> InsertAsync([FromBody] DepartmentMeta bomonMeta)
+        public async Task<IActionResult> InsertAsync(string IdFaculty,[FromBody] DepartmentMeta bomonMeta)
         {
-            var result = await _department.InsertAsync(bomonMeta);
+            var result = await _department.InsertAsync(IdFaculty, bomonMeta);
             return Ok(result);
         }
 

@@ -13,11 +13,15 @@ namespace NCKH.Core.Infrastructure.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
-        
-        public DepartmentService(IDepartmentRepository boMonRepository )
+       // private readonly IResourceService<APINCKHResource> _APINCKHResource;
+
+        public DepartmentService(IDepartmentRepository boMonRepository)
+                                 // IResourceService<APINCKHResource> APINCKHResource)
         {
             _departmentRepository = boMonRepository;
-            
+           // _APINCKHResource = APINCKHResource;
+
+
         }
         public async Task<List<DepartmentViewModel>> SelectAll()
         {
@@ -27,14 +31,17 @@ namespace NCKH.Core.Infrastructure.Services
         {
             return await _departmentRepository.SelectByIdAsync(IdDepartment, NameDepartment);
         }
-        public async Task<ActionResultReponese<string>> InsertAsync(DepartmentMeta bomonMeta)
+        public async Task<ActionResultReponese<string>> InsertAsync(string IdFaculty, DepartmentMeta bomonMeta)
         {
+            var isFaculty = await _departmentRepository.CheckExitsFacult(IdFaculty);
+            if (!isFaculty)
+                return new ActionResultReponese<string>(-21, "IdFaculty not found", "Faculty", null);
             var _bomon = new Department
             {
                 //  id = Guid.NewGuid().ToString(),
                 IdDepartment = bomonMeta.IdDepartment?.Trim(),
                 NameDepartment = bomonMeta.NameDepartment?.Trim(),
-                IdFaculty = bomonMeta.IdFaculty?.Trim(),
+                IdFaculty = IdFaculty?.Trim(),
                 CreateDate = DateTime.Now,
                 IsActive = true,
                 IsDelete = false
