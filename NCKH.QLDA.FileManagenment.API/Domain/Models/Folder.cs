@@ -9,10 +9,11 @@ namespace NCKH.QLDA.FileManagenment.API.Domain.Models
     public class Folder
     {
         public int id { get; set; }
-        public string ForlderName { get; set; }
-        public string ForlderId { get; set; }
+        public string FolderName { get; set; }
+        public int FolderId { get; set; }
         public string IdPath { get; set; }
         public string NamePath { get; set; }
+        public string ParentId { get; set; }
         public string Description { get; set; }
         public int Level { get; set; }
         public int ChildCount { get; set; }

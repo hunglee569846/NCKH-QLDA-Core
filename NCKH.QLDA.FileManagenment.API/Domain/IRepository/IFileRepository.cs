@@ -12,6 +12,8 @@ namespace NCKH.QLDA.FileManagenment.API.Domain.IRepository
     {
         Task<SearchResult<FileViewModel>> SearchAsync(string IdFile, string FileName, int FolderId);
         Task<List<FileViewModel>> SelectAllAsync(string FileName, int FolderId);
-        //Task<int> InsertAsync(Files file);
+        Task<int> InsertAsync(Files file);
+        Task<bool> CheckExistsByFolderIdName(string IdFile, int? folderId, string FileName);
+
     }
 }

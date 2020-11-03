@@ -18,15 +18,15 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
             _iFolderRepository = iFolderRepository;
         }
 
-        public async Task<ActionResultReponese<string>> InsertAsync(string IdPath,string FolderName,string folderId, FolderMeta folderMeta)
+        public async Task<ActionResultReponese<string>> InsertAsync(string IdPath,string FolderName,int folderId, FolderMeta folderMeta)
         {
             var isFolderID = await _iFolderRepository.CheckExitsFolder(folderId);
             if (isFolderID == true)
                 return new ActionResultReponese<string>(-21, "FolderId already exists", "Folder", null);
             var folder = new Folder()
             {
-                ForlderId = folderId,
-                ForlderName = FolderName,
+                FolderId = folderId,
+                FolderName = FolderName,
                 IdPath = IdPath,
                 NamePath = folderMeta.NamePath?.Trim(),
                 Level = folderMeta.Level,

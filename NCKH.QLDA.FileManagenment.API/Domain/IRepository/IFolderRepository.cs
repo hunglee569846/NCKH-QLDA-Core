@@ -5,7 +5,9 @@ namespace NCKH.QLDA.FileManagenment.API.Domain.IRepository
 {
     public interface IFolderRepository
     {
-        Task<int> InsertAsync(string IdPath,string FolderName,string FolderId,Folder folder);
-        Task<bool> CheckExitsFolder(string FolderId);
+        Task<int> InsertAsync(string IdPath,string FolderName,int FolderId,Folder folder);
+        Task<bool> CheckExitsFolder(int FolderId);
+        Task<Folder> GetInfoAsync(string FolderName, int FolderId);
+       // Task<bool> CheckExistsByFolderIdName(string FolderId, )
     }
 }

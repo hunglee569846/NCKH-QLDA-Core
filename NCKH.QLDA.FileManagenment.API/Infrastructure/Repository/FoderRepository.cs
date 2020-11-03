@@ -17,7 +17,7 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
         {
             _ConnectionString = ConnectionString;
         }
-        public async Task<int> InsertAsync(string IdPath,string FolderName, string FolderId, Folder folder)
+        public async Task<int> InsertAsync(string IdPath,string FolderName, int FolderId, Folder folder)
         {
             int rowaffaceted = 0;
             using (SqlConnection con = new SqlConnection(_ConnectionString))
@@ -49,7 +49,7 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
             }
             return rowaffaceted;
         }
-        public async Task<bool> CheckExitsFolder(string folderId)
+        public async Task<bool> CheckExitsFolder(int folderId)
         {
 
             using (SqlConnection con = new SqlConnection(_ConnectionString))
@@ -61,6 +61,18 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
 
                 var result = await con.ExecuteScalarAsync<bool>(sql, new { FolderId = folderId });
                 return result;
+            }
+        }
+        public async Task<Folder> GetInfoAsync(string FolderName, int FolderId)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@FolderName", FolderName);
+                param.Add("@FolderId", FolderId);
+                return await con.QuerySingleOrDefaultAsync<Folder>("[dbo].[spSelectFolderById]", param, commandType: CommandType.StoredProcedure);
             }
         }
     }

@@ -9,7 +9,7 @@ namespace NCKH.QLDA.FileManagenment.API.Domain.IServices
     public interface IFolderServices
 	{
 		//Task<FolderSearchViewModel> SearchAsync(string tenantId, string userId, string keyword, int page, int pageSize);
-		Task<ActionResultReponese<string>> InsertAsync(string IdPath, string FolderName, string FolderId,FolderMeta folderMeta);
+		Task<ActionResultReponese<string>> InsertAsync(string IdPath, string FolderName, int FolderId,FolderMeta folderMeta);
 		//Task<ActionResultReponese<string>> UpdateAsync(string tenantId, string lastUpdateUserId, string lastUpdateFullName, string lastUpdateAvatar, int id, FolderMeta folderMeta);
 		//Task<ActionResultReponese> DeleteAsync(string tenantId, string deleteUserId, string deleteFullName, string deleteAvatar, int id);
 		//Task<ActionResultReponese<FolderDetailViewModel>> GetDetailAsync(string tenantId, string userId, int id);

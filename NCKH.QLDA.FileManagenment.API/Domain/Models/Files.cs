@@ -11,9 +11,10 @@ namespace NCKH.QLDA.FileManagenment.API.Domain.Models
         public string IdFile { get; set; }
         public string FileName { get; set; }
         public long Size { get; set; }
+        public string Type { get; set; }
         public string Url { get; set; }
         public string CreatorId { get; set; }
-        public int Folderld { get; set; }
+        public int? Folderld { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdate { get; set; }
         public DateTime? DeleteTime { get; set; }

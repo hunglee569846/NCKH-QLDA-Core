@@ -10,8 +10,8 @@ namespace NCKH.QLDA.FileManagenment.API.Domain.IServices
 {
     public interface IFileService
     {
-        //Task<ActionResultReponese<List<FileViewModel>>> UploadFiles(string tenantId, string creatorId, string creatorFullName, string creatorAvatar,
-        //   int? folderId, IFormFileCollection formFileCollection);
+        Task<ActionResultReponese<List<FileViewModel>>> UploadFiles(string IdFile,string FileName, string creatorId, string FolderName,
+           int? folderId, IFormFileCollection formFileCollection);
         Task<SearchResult<FileViewModel>> SearchAsync(string IdFile, string FileName, int FolderId);
         //Task<ActionResultReponese<string>> UpdateAsync(string tenantId, string lastUpdateUserId, string lastUpdateFullName, string lastUpdateAvatar, string id, FileMeta fileMeta);
         //Task<ActionResultReponese> DeleteAsync(string tenantId, string deleteUserId, string deleteFullName, string deleteAvatar, string id);
