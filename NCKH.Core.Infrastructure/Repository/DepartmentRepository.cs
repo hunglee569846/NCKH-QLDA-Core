@@ -55,7 +55,6 @@ namespace NCKH.Core.Infrastructure.Repository
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@MaBoMon", department.IdDepartment);
                 para.Add("@TenBoMon", department.NameDepartment);
-
                 para.Add("@IdFaculty", department.IdFaculty);
                 para.Add("@CreatDate", department.CreateDate);
                 para.Add("@IsDelete", department.IsDelete);
@@ -95,19 +94,6 @@ namespace NCKH.Core.Infrastructure.Repository
                 return Code;
             }
         }
-        public async Task<bool> CheckExitsFacult(string idFacult)
-        {
-
-            using (SqlConnection con = new SqlConnection(_ConnectioString))
-            {
-                if (con.State == ConnectionState.Closed)
-                    await con.OpenAsync();
-
-                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Faculty WHERE Idfaculty =@idFacult  AND IsDelete = 0), 1, 0)";
-
-                var result = await con.ExecuteScalarAsync<bool>(sql, new { IdFacult = idFacult });
-                return result;
-            }
-        }
+       
     }
 }

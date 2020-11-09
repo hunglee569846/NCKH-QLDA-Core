@@ -12,8 +12,7 @@ namespace NCKH.Core.Domain.IRepository
         Task<int> InsertAsync(Department department);
         Task<int> UpdateAsync(string IdDepartment, Department department);
         Task<int> DeleteAsync(string IdDepartment, string NameDepartment);
-
-        Task<bool> CheckExitsFacult(string IdFacult);
+        
 
     }
 }

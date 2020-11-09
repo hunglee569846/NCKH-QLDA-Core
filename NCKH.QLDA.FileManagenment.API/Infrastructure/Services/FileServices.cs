@@ -106,7 +106,6 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
                     Url = x.Url,
                     CreateDate = x.CreateDate,
                     CreatorId = x.CreatorId,
-                    
                 }).ToList()
             };
 

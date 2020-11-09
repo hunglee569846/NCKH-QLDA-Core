@@ -3,6 +3,7 @@ using NCKH.Core.Domain.IServices;
 using NCKH.Core.Domain.ModelMeta;
 using NCKH.Core.Domain.Models;
 using NCKH.Core.Domain.ViewModel;
+using NCKH.Core.Infrastructure.Repository;
 using NCKH.Infrastruture.Binding.Models;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,15 @@ namespace NCKH.Core.Infrastructure.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly FacultyRepository _facultyRepository;
        // private readonly IResourceService<APINCKHResource> _APINCKHResource;
 
-        public DepartmentService(IDepartmentRepository boMonRepository)
+        public DepartmentService(IDepartmentRepository boMonRepository,
+                                 FacultyRepository facultyRepository)
                                  // IResourceService<APINCKHResource> APINCKHResource)
         {
             _departmentRepository = boMonRepository;
+            _facultyRepository = facultyRepository;
            // _APINCKHResource = APINCKHResource;
 
 
@@ -33,7 +37,7 @@ namespace NCKH.Core.Infrastructure.Services
         }
         public async Task<ActionResultReponese<string>> InsertAsync(string IdFaculty, DepartmentMeta bomonMeta)
         {
-            var isFaculty = await _departmentRepository.CheckExitsFacult(IdFaculty);
+            var isFaculty = await _facultyRepository.CheckExitsFacult(IdFaculty);
             if (!isFaculty)
                 return new ActionResultReponese<string>(-21, "IdFaculty not found", "Faculty", null);
             var _bomon = new Department

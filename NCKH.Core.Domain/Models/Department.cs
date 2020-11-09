@@ -1,11 +1,9 @@
-﻿
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 namespace NCKH.Core.Domain.Models
 {
     public class Department
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string IdDepartment { get; set; }
         public string NameDepartment { get; set; }
         public string IdFaculty { get; set; }
