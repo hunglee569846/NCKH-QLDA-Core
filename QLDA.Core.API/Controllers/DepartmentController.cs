@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NCKH.Core.Domain.IServices;
 using NCKH.Core.Domain.ModelMeta;
@@ -20,7 +19,7 @@ namespace QLDA.Core.API.Controllers
         }
 
         [AcceptVerbs("GET")]
-        [SwaggerOperation(Summary = "Get Department User", Description = "Requires login verification!", OperationId = "SelectBoMon", Tags = new[] { "Department" })]
+        [SwaggerOperation(Summary = "Get Department User", Description = "Requires login verification!", OperationId = "SelectDepartment", Tags = new[] { "Department" })]
         public async Task<IActionResult> SelectAll()
         {
             var result = await _department.SelectAll();

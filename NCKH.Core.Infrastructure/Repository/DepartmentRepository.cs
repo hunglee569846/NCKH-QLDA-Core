@@ -15,11 +15,8 @@ namespace NCKH.Core.Infrastructure.Repository
     public class DepartmentRepository : IDepartmentRepository
     {
         private readonly string _ConnectioString;
-        private readonly ILogger<DepartmentRepository> _logger;
-        public DepartmentRepository(string ConnectionString,
-                                ILogger<DepartmentRepository> logger)
+        public DepartmentRepository(string ConnectionString)
         {
-            _logger = logger;
             _ConnectioString = ConnectionString;
         }
         public async Task<List<DepartmentViewModel>> SelectAllAsync()
@@ -28,7 +25,7 @@ namespace NCKH.Core.Infrastructure.Repository
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
-                var Result = await conn.QueryAsync<DepartmentViewModel>("[spSelectAllDepartment]");
+                var Result = await conn.QueryAsync<DepartmentViewModel>("[spDepartment_SelectAll]");
                 return Result.ToList();
             }
         }

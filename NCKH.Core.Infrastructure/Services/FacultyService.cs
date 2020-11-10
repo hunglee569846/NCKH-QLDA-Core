@@ -4,6 +4,7 @@ using NCKH.Core.Domain.ModelMeta;
 using NCKH.Core.Domain.Models;
 using NCKH.Core.Domain.ViewModel;
 using NCKH.Infrastruture.Binding.Models;
+using NCKH.Infrastruture.Binding.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,14 +21,14 @@ namespace NCKH.Core.Infrastructure.Services
             _facultyRepository = facultyRepository;
 
         }
-        public async Task<ActionResultReponese<string>> InsertAsync(string idFaculty, FacultyMeta facultyMeTa)
+        public async Task<ActionResultReponese<string>> InsertAsync(FacultyMeta facultyMeTa)
         {
-            //var isFaculty = await _facultyRepository.CheckExitsFacult(IdFaculty);
-            //if (!isFaculty)
-            //    return new ActionResultReponese<string>(-21, "IdFaculty not found", "Faculty", null);
+            var isFaculty = await _facultyRepository.CheckExitsFacult(facultyMeTa.NameFaculty);
+            if (isFaculty)
+                return new ActionResultReponese<string>(-21, "IdFaculty da ton tai", "Faculty", null);
             var _faculty = new Faculty
             {
-                IdFaculty = idFaculty?.Trim(),
+                IdFaculty = Guid.NewGuid().ToString(),
                 NameFaculty = facultyMeTa?.NameFaculty.Trim(),
                 IsActive = true,
                 IsDelete = false
@@ -41,7 +42,7 @@ namespace NCKH.Core.Infrastructure.Services
         {
             return await _facultyRepository.SelectAllAsync();
         }
-        public async Task<FacultyViewModel> SelectById(string IdFaculty)
+        public async Task <SearchResult<FacultyViewModel>> SelectById(string IdFaculty)
         {
             return await _facultyRepository.SelectByIdAsync(IdFaculty);
 
