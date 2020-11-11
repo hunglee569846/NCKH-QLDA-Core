@@ -49,7 +49,7 @@ namespace NCKH.Core.Infrastructure.Repository
                         await conn.OpenAsync();
                     DynamicParameters para = new DynamicParameters();
                     para.Add("@IdFaculty", IdFaculty);
-                    using (var multi = await conn.QueryMultipleAsync("[spSelectByIdFaculty]", para, commandType: CommandType.StoredProcedure))
+                    using (var multi = await conn.QueryMultipleAsync("[spDepartment_SearchByIdFaculty]", para, commandType: CommandType.StoredProcedure))
                     {
                         var faculty = await multi.ReadAsync<FacultyViewModel>();
                         var totalrow = (await multi.ReadAsync<int>()).Single();

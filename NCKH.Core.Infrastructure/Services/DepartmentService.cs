@@ -3,10 +3,12 @@ using NCKH.Core.Domain.IServices;
 using NCKH.Core.Domain.ModelMeta;
 using NCKH.Core.Domain.Models;
 using NCKH.Core.Domain.ViewModel;
-using NCKH.Core.Infrastructure.Repository;
+using NCKH.Infrastruture.Binding.Constans;
 using NCKH.Infrastruture.Binding.Models;
+using NCKH.Infrastruture.Binding.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NCKH.Core.Infrastructure.Services
@@ -14,69 +16,82 @@ namespace NCKH.Core.Infrastructure.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
-        private readonly FacultyRepository _facultyRepository;
-       // private readonly IResourceService<APINCKHResource> _APINCKHResource;
+        private readonly IFacultyRepository _facultyRepository;
 
-        public DepartmentService(IDepartmentRepository boMonRepository,
-                                 FacultyRepository facultyRepository)
-                                 // IResourceService<APINCKHResource> APINCKHResource)
+        public DepartmentService(IDepartmentRepository departmentRepository,
+                                 IFacultyRepository facultyRepository)
         {
-            _departmentRepository = boMonRepository;
+            _departmentRepository = departmentRepository;
             _facultyRepository = facultyRepository;
-           // _APINCKHResource = APINCKHResource;
-
 
         }
         public async Task<List<DepartmentViewModel>> SelectAll()
         {
             return await _departmentRepository.SelectAllAsync();
         }
-        public async Task<DepartmentViewModel> SelectById(string IdDepartment, string NameDepartment)
+        public async Task<SearchResult<DepartmentViewModel>> SelectByIdFaculty(string idfaculty)
         {
-            return await _departmentRepository.SelectByIdAsync(IdDepartment, NameDepartment);
+            return await _departmentRepository.SelectByIdFacultyAsync(idfaculty);
         }
-        public async Task<ActionResultReponese<string>> InsertAsync(string IdFaculty, DepartmentMeta bomonMeta)
+        public async Task<ActionResultReponese<DepartmentViewModel>> SelectByIdAsync(string idDepartment, string nameDepartment)
         {
-            var isFaculty = await _facultyRepository.CheckExitsFacult(IdFaculty);
-            if (!isFaculty)
-                return new ActionResultReponese<string>(-21, "IdFaculty not found", "Faculty", null);
-            var _bomon = new Department
+            var result = await _departmentRepository.SelectByIdAsync(idDepartment, nameDepartment);
+            if (result == null)
+                return new ActionResultReponese<DepartmentViewModel>(-31,"Khong tim thay", "Department");
+            return new ActionResultReponese<DepartmentViewModel>
             {
-                //  id = Guid.NewGuid().ToString(),
-                IdDepartment = bomonMeta.IdDepartment?.Trim(),
-                NameDepartment = bomonMeta.NameDepartment?.Trim(),
-                IdFaculty = IdFaculty?.Trim(),
+                Code = 1,
+                Data = result,
+            };
+        }
+        public async Task<ActionResultReponese<string>> InsertAsync(string NameFaculty, DepartmentMeta department)
+        {
+            var idfaculty =await _facultyRepository.CheckExitsFacult(NameFaculty);
+            if (!idfaculty)
+                return new ActionResultReponese<string>(-21, "khoa khong ton tai", "Faculty");
+            var namedeartment = await _departmentRepository.CheckExitsDepartment(department.NameDepartment);
+            if (namedeartment)
+                return new ActionResultReponese<string>(-22, "Bo mon da ton tai", "Department");
+            var _department = new Department
+            {
+                IdDepartment = Guid.NewGuid().ToString(),
+                NameDepartment = department.NameDepartment?.Trim(),
+                Office = department.Office?.Trim(),
+                Addres = department.Addres?.Trim(),
+                Email = department.Email?.Trim(),
+                PhoneNumber = department.PhoneNumber?.Trim(),
+                IdFaculty = department.IdFaculty?.Trim(),
                 CreateDate = DateTime.Now,
+                LastUpdate = null,
                 IsActive = true,
                 IsDelete = false
             };
-            var Result = await _departmentRepository.InsertAsync(_bomon);
+            var Result = await _departmentRepository.InsertAsync(_department);
             if (Result >= 0)
-                return new ActionResultReponese<string>(Result, "thanh cong", "Department", null);
-            return new ActionResultReponese<string>(Result, "that bai", "Department", null);
+                return new ActionResultReponese<string>(Result, "them thanh cong", "Department", null);
+            return new ActionResultReponese<string>(Result, "them that bai", "Department", null);
+
         }
         public async Task<ActionResultReponese<string>> UpdateAsync(string IdDepartment, DepartmentMeta department)
         {
-            var _bomon = new Department
+            var idfaculty = await _facultyRepository.CheckExitsFacult(department.IdFaculty);
+            if (!idfaculty)
+                return new ActionResultReponese<string>(-21, "khoa khong ton tai", "Faculty");
+            var _department = new Department
             {
-                //  id = Guid.NewGuid().ToString(),
+                IdDepartment = IdDepartment?.Trim(),
                 NameDepartment = department.NameDepartment?.Trim(),
+                Office = department.Office?.Trim(),
+                Addres = department.Addres?.Trim(),
+                Email = department.Email?.Trim(),
+                PhoneNumber = department.PhoneNumber?.Trim(),
                 IdFaculty = department.IdFaculty?.Trim(),
-                IsActive = true,
-                IsDelete = false,
                 LastUpdate = DateTime.Now,
             };
-            var Result = await _departmentRepository.UpdateAsync(IdDepartment, _bomon);
+            var Result = await _departmentRepository.UpdateAsync(_department);
             if (Result > 0)
                 return new ActionResultReponese<string>(Result, "Update thanh cong", "Department", null);
             return new ActionResultReponese<string>(Result, "Update that bai", "Department", null);
-        }
-        public async Task<ActionResultReponese<string>> DeleteAsync(string IdDepartment, string NameDepartment)
-        {
-            var Result = await _departmentRepository.DeleteAsync(IdDepartment, NameDepartment);
-            if (Result >= 0)
-                return new ActionResultReponese<string>(Result, "Delete thanh cong", "Department", null);
-            return new ActionResultReponese<string>(Result, "Delete that bai", "Department", null);
         }
     }
 }
