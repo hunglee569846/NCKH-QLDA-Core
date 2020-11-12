@@ -14,12 +14,14 @@ namespace NCKH.Core.Domain.Models
         public bool IsDelete { get; set; }
         public bool IsActive { get; set; }
         public DateTime? LastUpdate { get; set; }
+        public DateTime? DeleteTime { get; set; }
 
         public Department()
         {
             IsActive = true;
             IsDelete = false;
             LastUpdate = null;
+            DeleteTime = null;
             CreateDate = DateTime.Now;
         }
     }

@@ -15,7 +15,9 @@ namespace NCKH.Core.Domain.IRepository
         Task<SearchResult<DepartmentViewModel>> SelectByIdFacultyAsync(string IdFaculty);
         Task<int> InsertAsync(Department department);
         Task<int> UpdateAsync(Department department);
-        //Task<int> DeleteAsync(string IdDepartment, string NameDepartment);
+        Task<int> DeleteAsync(string IdDepartment, string NameDepartment);
         Task<bool> CheckExitsDepartment(string NameDepartment);
+        Task<bool> CheckExitsByIdDepartment(string NameDepartment);
+        Task<DepartmentGetInfoViewModel> GetInfo(string idDepartment, string NameDepartment);
     }
 }

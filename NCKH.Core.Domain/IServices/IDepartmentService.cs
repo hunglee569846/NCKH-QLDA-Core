@@ -16,6 +16,6 @@ namespace NCKH.Core.Domain.IServices
         Task<SearchResult<DepartmentViewModel>> SelectByIdFaculty(string idfaculty);
         Task<ActionResultReponese<string>> InsertAsync(string nameDepartment,DepartmentMeta department);
         Task<ActionResultReponese<string>> UpdateAsync(string IdDepartment, DepartmentMeta department);
-        //Task<ActionResultReponese<string>> DeleteAsync(string IdDepartment, string NameDepartment);
+        Task<ActionResultReponese<string>> DeleteAsync(string IdDepartment, string NameDepartment);
     }
 }

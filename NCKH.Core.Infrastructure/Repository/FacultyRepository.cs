@@ -78,6 +78,7 @@ namespace NCKH.Core.Infrastructure.Repository
             }
         }
         public async Task<int> DeleteAsync (string IdFaculty)
+
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
@@ -104,7 +105,6 @@ namespace NCKH.Core.Infrastructure.Repository
         }
         public async Task<bool> CheckExitsFacult(string namefaculty)
         {
-
             using (SqlConnection con = new SqlConnection(_ConnectioString))
             {
                 if (con.State == ConnectionState.Closed)
@@ -117,5 +117,18 @@ namespace NCKH.Core.Infrastructure.Repository
             }
         }
 
+        public async Task<bool> CheckExitsIdFacult(string idfaculty)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Faculty WHERE Idfaculty = @idfaculty  AND IsDelete = 0), 1, 0)";
+
+                var result = await con.ExecuteScalarAsync<bool>(sql, new { Idfaculty = idfaculty });
+                return result;
+            }
+        }
     }
 }

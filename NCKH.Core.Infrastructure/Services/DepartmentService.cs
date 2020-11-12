@@ -35,7 +35,9 @@ namespace NCKH.Core.Infrastructure.Services
         }
         public async Task<ActionResultReponese<DepartmentViewModel>> SelectByIdAsync(string idDepartment, string nameDepartment)
         {
+            var getinfoDepartment = _departmentRepository.GetInfo(idDepartment, nameDepartment);
             var result = await _departmentRepository.SelectByIdAsync(idDepartment, nameDepartment);
+            //var result = await _departmentRepository.GetInfo(idDepartment, nameDepartment);
             if (result == null)
                 return new ActionResultReponese<DepartmentViewModel>(-31,"Khong tim thay", "Department");
             return new ActionResultReponese<DepartmentViewModel>
@@ -64,7 +66,8 @@ namespace NCKH.Core.Infrastructure.Services
                 CreateDate = DateTime.Now,
                 LastUpdate = null,
                 IsActive = true,
-                IsDelete = false
+                IsDelete = false,
+                DeleteTime= null
             };
             var Result = await _departmentRepository.InsertAsync(_department);
             if (Result >= 0)
@@ -92,6 +95,16 @@ namespace NCKH.Core.Infrastructure.Services
             if (Result > 0)
                 return new ActionResultReponese<string>(Result, "Update thanh cong", "Department", null);
             return new ActionResultReponese<string>(Result, "Update that bai", "Department", null);
+        }
+        public async Task<ActionResultReponese<string>> DeleteAsync(string IdDepartment, string NameDepartment)
+        {
+            var idfaculty = await _departmentRepository.CheckExitsDepartment(NameDepartment);
+            if (!idfaculty)
+                return new ActionResultReponese<string>(-21, "Bo mon khong ton tai", "Department");
+            var Result = await _departmentRepository.DeleteAsync(IdDepartment, NameDepartment);
+            if (Result > 0)
+                return new ActionResultReponese<string>(Result, "Delete thanh cong", "Department", null);
+            return new ActionResultReponese<string>(Result, "Delete that bai", "Department", null);
         }
     }
 }

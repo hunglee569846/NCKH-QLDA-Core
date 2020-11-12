@@ -95,6 +95,11 @@ namespace NCKH.Core.Infrastructure.Repository
                 }
                 para.Add("@IsDelete", department.IsDelete);
                 para.Add("@IsActive", department.IsActive);
+                
+                if (department.LastUpdate != null && department.LastUpdate != DateTime.MinValue)
+                {
+                    para.Add("@DeleteTime", department.DeleteTime);
+                }
                 if (department.LastUpdate != null && department.LastUpdate != DateTime.MinValue)
                 {
                     para.Add("@LastUpdate", department.LastUpdate);
@@ -103,19 +108,7 @@ namespace NCKH.Core.Infrastructure.Repository
                 return Code;
             }
         }
-        public async Task<bool> CheckExitsDepartment(string namedepartment)
-        {
-            using (SqlConnection con = new SqlConnection(_ConnectioString))
-            {
-                if (con.State == ConnectionState.Closed)
-                    await con.OpenAsync();
 
-                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Department WHERE NameDepartment = @namedepartment AND IsDelete = 0), 1, 0)";
-
-                var result = await con.ExecuteScalarAsync<bool>(sql, new { NameDepartment = namedepartment });
-                return result;
-            }
-        }
         public async Task<int> UpdateAsync(Department department)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
@@ -136,6 +129,58 @@ namespace NCKH.Core.Infrastructure.Repository
                 }
                 var Code = await conn.ExecuteAsync("[spDepartment_Update]", para, commandType: CommandType.StoredProcedure);
                 return Code;
+            }
+        }
+        public async Task<int> DeleteAsync(string IdDepartment, string NameDepartment)
+        {
+            using (SqlConnection conn = new SqlConnection(_ConnectioString))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+                DynamicParameters para = new DynamicParameters();
+                para.Add("@IdDepartment", IdDepartment);
+                para.Add("@NameDepartment", NameDepartment);
+                var Code = await conn.ExecuteAsync("[spDepartment_delete]", para, commandType: CommandType.StoredProcedure);
+                return Code;
+            }
+        }
+        public async Task<bool> CheckExitsDepartment(string namedepartment)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Department WHERE NameDepartment = @namedepartment AND IsDelete = 0), 1, 0)";
+
+                var result = await con.ExecuteScalarAsync<bool>(sql, new { NameDepartment = namedepartment });
+                return result;
+            }
+        }
+        public async Task<bool> CheckExitsByIdDepartment(string idDepartment)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Department WHERE IdDepartment = @idDepartment AND IsDelete = 0), 1, 0)";
+
+                var result = await con.ExecuteScalarAsync<bool>(sql, new { IdDepartment = idDepartment });
+                return result;
+            }
+        }
+        public async Task<DepartmentGetInfoViewModel> GetInfo(string idDepartment, string NameDepartment)
+        {
+            using (SqlConnection conn = new SqlConnection(_ConnectioString))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+                DynamicParameters para = new DynamicParameters();
+                para.Add("@IdDepartment", idDepartment);
+                para.Add("@NameDepartment", NameDepartment);
+                var result = await conn.QuerySingleOrDefaultAsync<DepartmentGetInfoViewModel>("spDepartment_GetInfo", para, commandType: CommandType.StoredProcedure);
+                return result;
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -44,17 +45,24 @@ namespace QLDA.Core.API.Controllers
         }
 
         [AcceptVerbs("POST"),Route("{NameFaculty}")]
-        [SwaggerOperation(Summary = "Insert Department User", Description = "Requires login verification!", OperationId = "InsertFaculty", Tags = new[] { "Faculty" })]
+        [SwaggerOperation(Summary = "Insert Department User", Description = "Requires login verification!", OperationId = "InsertFaculty", Tags = new[] { "Department" })]
         public async Task<IActionResult> InsertAsync(string NameFaculty,[FromBody] DepartmentMeta departmentMeta)
         {
             var result = await _department.InsertAsync(NameFaculty, departmentMeta);
             return Ok(result);
         }
         [Route("Update/{idDepartment}"), AcceptVerbs("PUT")]
-        [SwaggerOperation(Summary = "Update Faculty User", Description = "Requires login verification!", OperationId = "UpdateDepartment", Tags = new[] { "Faculty" })]
+        [SwaggerOperation(Summary = "Update Faculty User", Description = "Requires login verification!", OperationId = "UpdateDepartment", Tags = new[] { "Department" })]
         public async Task<IActionResult> UpdateAsync(string idDepartment, DepartmentMeta department)
         {
             var result = await _department.UpdateAsync(idDepartment, department);
+            return Ok(result);
+        }
+        [Route("DeleteDepartmernt/{idDepartment}/{nameDepartment}"), AcceptVerbs("DELETE")]
+        [SwaggerOperation(Summary ="Delete Department User", Description= "Requires login verification!", OperationId = "DeleteDepartment", Tags = new[] { "Department" })]
+        public async Task<IActionResult> DeleteAsync(string idDepartment,string nameDepartment)
+        {
+            var result = await _department.DeleteAsync(idDepartment, nameDepartment);
             return Ok(result);
         }
     }

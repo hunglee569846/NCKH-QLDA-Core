@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace NCKH.Core.Domain.ViewModel
 {
-    public class DepartmentViewModel
+    public class DepartmentGetInfoViewModel
     {
         public string IdDepartment { get; set; }
         public string NameDepartment { get; set; }
