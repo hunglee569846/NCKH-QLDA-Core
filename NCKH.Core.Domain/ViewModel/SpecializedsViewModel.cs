@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NCKH.Core.Domain.Models
+namespace NCKH.Core.Domain.ViewModel
 {
-    public class Specialized
+    public class SpecializedsViewModel
     {
-        public string Id { get; set; }
         public string IdSpecialized { get; set; }
         public string NameSpecialized { get; set; }
         public string Office { get; set; }
@@ -17,14 +16,5 @@ namespace NCKH.Core.Domain.Models
         public string IdIndustry { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdate { get; set; }
-        public bool IsDelete { get; set; }
-        public bool IsActive { get; set; }
-        public Specialized()
-        {
-            CreateDate = DateTime.Now;
-            LastUpdate = null;
-            IsDelete = false;
-            IsActive = true;
-        }
     }
 }

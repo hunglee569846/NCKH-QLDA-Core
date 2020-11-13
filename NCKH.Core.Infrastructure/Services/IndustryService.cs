@@ -58,5 +58,53 @@ namespace NCKH.Core.Infrastructure.Services
             return new ActionResultReponese<string>(code, "Insert that bai", "Industry");
         }
 
+        public async Task<IndustryViewModel> SelectById(string nameIndustry)
+        {
+            var industryInfo = await _iindustryRepository.GetInfoAsync(nameIndustry);
+            return await _iindustryRepository.SelectByIdAsync(industryInfo.IdIndustry);
+        }
+
+        public async Task<ActionResultReponese<string>> UpdateAsync(string nameIndustry, IndustryMeta industryMeta)
+        {
+            var isnameIndustry = await _iindustryRepository.checkexitNameIndustry(nameIndustry);
+            if (!isnameIndustry)
+                return new ActionResultReponese<string>(-31, "NameIndustry khong ton tai", "Industry");
+           
+            var getInfoIndustry = await _iindustryRepository.GetInfoAsync(nameIndustry);
+            var isDepartmenrt = await _iDepartmentRepository.CheckExitsByIdDepartment(industryMeta.IdDepartment);
+            if (!isDepartmenrt)
+                return new ActionResultReponese<string>(-31, "idDepartment khong ton tai", "Department");
+
+            var _industryUpdate = new Industry
+            {
+                IdIndustry = getInfoIndustry.IdIndustry?.Trim(),
+                NameIndustry = industryMeta.NameIndustry?.Trim(),
+                Address = industryMeta.Address?.Trim(),
+                Details = industryMeta.Details?.Trim(),
+                Email = industryMeta.Email?.Trim(),
+                IdDepartment = industryMeta.IdDepartment?.Trim(),
+                PhoneNumber = industryMeta.PhoneNumber?.Trim(),
+                LastUpdate = DateTime.Now,
+                CreateDate = getInfoIndustry.CreateDate,
+                Deletetime = null,
+                IsActive = true,
+                IsDelete = false,
+            };
+            var Result = await _iindustryRepository.UpdateAsync(_industryUpdate);
+            if (Result >= 0)
+                return new ActionResultReponese<string>(Result, "Update Nganh thanh cong", "Industry");
+            return new ActionResultReponese<string>(Result, "Update Nganh that bai", "Industry");
+        }
+        public async Task<ActionResultReponese<string>> DeleteAsync(string nameIndustry)
+        {
+            var isnameIndustry = await _iindustryRepository.checkexitNameIndustry(nameIndustry);
+            if (!isnameIndustry)
+                return new ActionResultReponese<string>(-31, "NameIndustry khong ton tai", "Industry");
+            var getInfoIndustry = await _iindustryRepository.GetInfoAsync(nameIndustry);
+            var Result = await _iindustryRepository.DeleteAsync(getInfoIndustry.IdIndustry);
+            if (Result >= 0)
+                return new ActionResultReponese<string>(Result, "Delete Nganh thanh cong", "Industry");
+            return new ActionResultReponese<string>(Result, "Delete Nganh that bai", "Industry");
+        }
     }
 }

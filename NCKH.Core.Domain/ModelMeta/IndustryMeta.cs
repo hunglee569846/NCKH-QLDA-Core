@@ -11,5 +11,6 @@ namespace NCKH.Core.Domain.ModelMeta
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string Details { get; set; }
+        public string IdDepartment { get; set; }
     }
 }

@@ -10,5 +10,8 @@ namespace NCKH.Core.Domain.IServices
     {
         Task<List<IndustryViewModel>> SelectAll();
         Task<ActionResultReponese<string>> InsertAsync(string idDepartment,IndustryMeta industryMeta);
+        Task<IndustryViewModel> SelectById(string idIndustry);
+        Task<ActionResultReponese<string>> DeleteAsync(string nameIndustry);
+        Task<ActionResultReponese<string>> UpdateAsync(string nameIndustry, IndustryMeta industryMeta);
     }
 }

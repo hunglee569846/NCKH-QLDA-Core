@@ -33,7 +33,7 @@ namespace NCKH.Core.Infrastructure.Repository
                 para.Add("@IsDelete", faculty.IsDelete);
                 para.Add("@IsActive", faculty.IsActive);
             
-                var Code = await conn.ExecuteAsync("[spInsertFaculty]", para, commandType: CommandType.StoredProcedure);
+                var Code = await conn.ExecuteAsync("[spFaculty_Insert]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }
@@ -73,7 +73,7 @@ namespace NCKH.Core.Infrastructure.Repository
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
-                var Code = await conn.QueryAsync<FacultyViewModel>("[spSelectAllFaculty]");
+                var Code = await conn.QueryAsync<FacultyViewModel>("[spFaculty_SelectAll]");
                 return Code.ToList();
             }
         }
@@ -86,7 +86,7 @@ namespace NCKH.Core.Infrastructure.Repository
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@IdFaculty", IdFaculty);
-                var Code = await conn.ExecuteAsync("[spDeleteFaculty]", para, commandType: CommandType.StoredProcedure);
+                var Code = await conn.ExecuteAsync("[spFaculty_Delete]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }
@@ -99,7 +99,7 @@ namespace NCKH.Core.Infrastructure.Repository
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@IdFaculty", IdFaculty);
                 para.Add("@NameFaculty", NameFaculty);
-                var Code = await conn.ExecuteAsync("[spUpdateFaculty]", para, commandType: CommandType.StoredProcedure);
+                var Code = await conn.ExecuteAsync("[spFaculty_Update]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }

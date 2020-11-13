@@ -29,11 +29,34 @@ namespace QLDA.Core.API.Controllers
             return Ok(code);
 
         }
-        [AcceptVerbs("POST"),Route("InsertDepartment/{idDepartment}")]
-        [SwaggerOperation(Summary = "GETALL Industry", Description = "Requires login verification!", OperationId = "GetAllIndustry", Tags = new[] {"Industry"})]
+        [AcceptVerbs("GET"),Route("GETbyNameIndustry/{nameindustry}")]
+        [SwaggerOperation(Summary = "GETbyid Industry", Description = "Requires login verification!", OperationId = "GETbyidIndustry", Tags = new[] { "Industry" })]
+        public async Task<IActionResult> SelectById(string nameindustry)
+        {
+            var code = await _industryService.SelectById(nameindustry);
+            return Ok(code);
+
+        }
+        [AcceptVerbs("POST"),Route("InsertIndustry/{idDepartment}")]
+        [SwaggerOperation(Summary = "Insert Industry", Description = "Requires login verification!", OperationId = "InsertIndustry", Tags = new[] {"Industry"})]
         public async Task<IActionResult> InsertAsync(string idDepartment,IndustryMeta industrymeta)
         {
             var code= await _industryService.InsertAsync(idDepartment, industrymeta);
+            return Ok(code);
+        }
+        [AcceptVerbs("PUT"), Route("UpdateIndustry/{nameIndustry}")]
+        [SwaggerOperation(Summary = "Update Industry", Description = "Requires login verification!", OperationId = "UpdateIndustry", Tags = new[] { "Industry" })]
+        public async Task<IActionResult> UpdateAsync(string nameIndustry, IndustryMeta industrymeta)
+        {
+            var code = await _industryService.UpdateAsync(nameIndustry, industrymeta);
+            return Ok(code);
+        }
+
+        [AcceptVerbs("DELETE"), Route("Delete/{nameIndustry}")]
+        [SwaggerOperation(Summary = "Delete Industry", Description = "Requires login verification!", OperationId = "DeleteIndustry", Tags = new[] { "Industry" })]
+        public async Task<IActionResult> DeleteAsync(string nameIndustry)
+        {
+            var code = await _industryService.DeleteAsync(nameIndustry);
             return Ok(code);
         }
     } 

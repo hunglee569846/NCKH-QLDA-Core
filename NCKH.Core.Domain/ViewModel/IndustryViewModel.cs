@@ -14,5 +14,6 @@ namespace NCKH.Core.Domain.ViewModel
         public string Adress { get; set; }
         public string Details { get; set; }
         public DateTime CreateDate { get; set; }
+        public DateTime LastUpdate { get; set; }
     }
 }

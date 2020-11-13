@@ -11,7 +11,12 @@ namespace NCKH.Core.Domain.IRepository
     public interface IIndustryRepository
     {
         Task<List<IndustryViewModel>> SelectAllAsync();
+        Task<IndustryViewModel> SelectByIdAsync(string idIndustry);
+        Task<Industry> GetInfoAsync(string NameIndustry);
         Task<int> InsertAsync(Industry industry);
+        Task<int> UpdateAsync(Industry industry);
+        Task<int> DeleteAsync(string industry);
         Task<bool> checkexitNameIndustry(string nameIndustry);
+        Task<bool> checkexitIdIndustry(string idIndustry);
     }
 }

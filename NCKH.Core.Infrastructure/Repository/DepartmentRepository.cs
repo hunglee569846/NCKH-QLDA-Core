@@ -163,7 +163,6 @@ namespace NCKH.Core.Infrastructure.Repository
             {
                 if (con.State == ConnectionState.Closed)
                     await con.OpenAsync();
-
                 var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Department WHERE IdDepartment = @idDepartment AND IsDelete = 0), 1, 0)";
 
                 var result = await con.ExecuteScalarAsync<bool>(sql, new { IdDepartment = idDepartment });
