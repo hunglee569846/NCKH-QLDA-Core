@@ -23,7 +23,7 @@ namespace QLDA.Core.API.Controllers
             _department = department;
         }
         [AcceptVerbs("GET"), Route("GetAll")]
-        [SwaggerOperation(Summary = "SelectByID Department User", Description = "Requires login verification!", OperationId = "GetAllDepartment", Tags = new[] { "Department" })]
+        [SwaggerOperation(Summary = "SelectAll Department User", Description = "Requires login verification!", OperationId = "GetAllDepartment", Tags = new[] { "Department" })]
         public async Task<IActionResult> SelectAllAsync()
         {
             var result = await _department.SelectAll();

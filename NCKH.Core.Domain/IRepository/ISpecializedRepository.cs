@@ -13,9 +13,10 @@ namespace NCKH.Core.Domain.IRepository
         Task<int> InsertAsync(Specialized specialized);
         Task<bool> CheckExistByIdSpecialized(string idSpecailized);
         Task<bool> CheckExistByNameSpecialized(string nameSpecailized);
-        Task<Industry> GetInfoAsync(string nameSpecialized);
-        //Task<int> UpdateAsync();
-        //Task<int> DeleteAsync();
+        Task<bool> CheckExist(string id);
+        Task<Specialized> GetInfoAsync(string nameSpecialized);
+        Task<int> UpdateAsync(Specialized specialized);
+        Task<int> DeleteAsync(string id);
 
     }
 }

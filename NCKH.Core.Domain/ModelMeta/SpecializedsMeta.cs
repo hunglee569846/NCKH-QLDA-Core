@@ -6,7 +6,6 @@ namespace NCKH.Core.Domain.ModelMeta
 {
     public class SpecializedsMeta
     {
-        public string NameSpecialized { get; set; }
         public string Office { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }

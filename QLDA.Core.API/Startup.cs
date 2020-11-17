@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using NCKH.Core.Infrastructure.AutofacModules;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.Linq;
 
 namespace QLDA.Core.API
 {
@@ -26,6 +27,7 @@ namespace QLDA.Core.API
             services.AddControllers();
             services.AddSwaggerGen(options =>
             {
+                services.AddCors();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     //TermsOfService = "http://daotao.humg.edu.vn/",
@@ -63,7 +65,17 @@ namespace QLDA.Core.API
             }
 
             app.UseHttpsRedirection();
-
+            #region Allow Origins
+            var allowOrigins = Configuration.GetSection("AllowOrigins")
+                .GetChildren().Select(x => x.Value).ToArray();
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins(allowOrigins);
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowCredentials();
+            });
+            #endregion
             app.UseRouting();
 
             app.UseAuthorization();

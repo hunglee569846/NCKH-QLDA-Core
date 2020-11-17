@@ -37,6 +37,7 @@ namespace NCKH.Core.Infrastructure.Repository
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@id", specialzed.Id);
+                para.Add("@IdSpecialized", specialzed.IdSpecialized);
                 para.Add("@NameSpecialized", specialzed.NameSpecialized);
                 para.Add("@Office", specialzed.Office);
                 para.Add("@Email", specialzed.Email);
@@ -48,9 +49,50 @@ namespace NCKH.Core.Infrastructure.Repository
                 para.Add("@CreateDate", specialzed.CreateDate);
                 para.Add("@IsDelete", specialzed.IsDelete);
                 para.Add("@IsActive", specialzed.IsActive);
-                var Code = await conn.ExecuteAsync("spSpecialized_SelectAll");
+                var Code = await conn.ExecuteAsync("[spSpecialized_Insert]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
+        }
+        public async Task<int> UpdateAsync(Specialized specialized)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+                DynamicParameters para = new DynamicParameters();
+                para.Add("@id", specialized.Id);
+                para.Add("@IdSpecialized", specialized.IdSpecialized);
+                para.Add("@NameSpecialized", specialized.NameSpecialized);
+                para.Add("@Office", specialized.Office);
+                para.Add("@Email", specialized.Email);
+                para.Add("@PhoneNumber", specialized.PhoneNumber);
+                para.Add("@Address", specialized.Address);
+                para.Add("@Note", specialized.Note);
+                para.Add("@IdIndustry", specialized.IdIndustry);
+                para.Add("@LastUpdate", specialized.LastUpdate);
+                if (specialized.CreateDate !=null && specialized.CreateDate != DateTime.MinValue)
+                {
+                    para.Add("@CreateDate", specialized.CreateDate);
+                }
+                para.Add("@IsDelete", specialized.IsDelete);
+                para.Add("@IsActive", specialized.IsActive);
+                var Code = await conn.ExecuteAsync("[spSpecialized_Update]", para, commandType: CommandType.StoredProcedure);
+                return Code;
+            }
+
+        }
+        public async Task<int> DeleteAsync(string id)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+                DynamicParameters para = new DynamicParameters();
+                para.Add("@id", id);
+                var Code = await conn.ExecuteAsync("[spSpeacialized_Delete]", para, commandType: CommandType.StoredProcedure);
+                return Code;
+            }
+
         }
         public async Task<bool> CheckExistByIdSpecialized(string idSpecialized)
         {
@@ -63,7 +105,7 @@ namespace NCKH.Core.Infrastructure.Repository
                 return result;
             }
         }
-        public async Task<Industry> GetInfoAsync(string nameSpecialized)
+        public async Task<Specialized> GetInfoAsync(string nameSpecialized)
         {
             using (SqlConnection conn = new SqlConnection(_connectionstring))
             {
@@ -71,18 +113,30 @@ namespace NCKH.Core.Infrastructure.Repository
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@nameSpeacialized", nameSpecialized);
-                var code = await conn.QuerySingleOrDefaultAsync<Industry>("spSpecialized_GetInfo", para, commandType: CommandType.StoredProcedure);
+                var code = await conn.QuerySingleOrDefaultAsync<Specialized>("spSpecialized_GetInfo", para, commandType: CommandType.StoredProcedure);
                 return code;
             }
         }
-        public async Task<bool> CheckExistByNameSpecialized(string nameSpecailized)
+        public async Task<bool> CheckExistByNameSpecialized(string nameSpecialized)
         {
             using (SqlConnection conn = new SqlConnection(_connectionstring))
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
-                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Specializeds WHERE NameSpecialized = @nameSpecailized AND IsDelete = 0), 1, 0)";
-                var result = await conn.ExecuteScalarAsync<bool>(sql, new { NameSpecialized = nameSpecailized });
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Specializeds WHERE NameSpecialized = @nameSpecialized AND IsDelete = 0), 1, 0)";
+                var result = await conn.ExecuteScalarAsync<bool>(sql, new { NameSpecialized = nameSpecialized });
+                return result;
+            }
+        }
+
+        public async Task<bool> CheckExist(string id)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Specializeds WHERE Id = @id AND IsDelete = 0), 1, 0)";
+                var result = await conn.ExecuteScalarAsync<bool>(sql, new { Id = id });
                 return result;
             }
         }

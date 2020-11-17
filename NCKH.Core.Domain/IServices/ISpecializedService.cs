@@ -13,5 +13,7 @@ namespace NCKH.Core.Domain.IServices
     {
         Task<List<SpecializedsViewModel>> SelectAllAsync();
         Task<ActionResultReponese<string>> InsertAsync(string idSpecialized, string nameSpecialized ,SpecializedsMeta specializedMeta);
+        Task<ActionResultReponese<string>> UpdateAsync(string id, string nameSpecialized,string idSpecialized, SpecializedsMeta specializedsMeta);
+        Task<ActionResultReponese<string>> DeleteAsync(string idSpecialized, string nameSpecialized);
     }
 }
