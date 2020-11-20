@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost:5005/",
+      "applicationUrl": "http://localhost:81/",
       "sslPort": 0
     },
     "iisExpress": {
@@ -18,10 +18,12 @@
       "launchUrl": "index.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": true,
+      "applicationUrl": "http://localhost:5005/"
     },
     "GHM.NailSpa.Api": {
-      "commandName": "Project",
+      "commandName": "IIS",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -34,7 +36,11 @@
       "launchUrl": "api/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": true
+    },
+    "QLDA-Core": {
+      "commandName": "Project"
     }
   }
 }

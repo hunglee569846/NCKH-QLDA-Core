@@ -47,6 +47,10 @@ namespace NCKH.Core.Infrastructure.Services
             return await _facultyRepository.SelectByIdAsync(IdFaculty);
 
         }
+        public async Task<FacultyViewModel> SelectByIdFaculty(string IdFaculty)
+        {
+            return await _facultyRepository.SelectByIdFacultyAsync(IdFaculty);
+        }
         public async Task<ActionResultReponese<string>> UpdateAsync(string idFaculty, string NameFaculty)
         {
             var code = await _facultyRepository.UpdateAsync(idFaculty, NameFaculty);

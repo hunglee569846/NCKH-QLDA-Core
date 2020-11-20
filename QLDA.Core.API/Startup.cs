@@ -76,6 +76,7 @@ namespace QLDA.Core.API
                 builder.AllowCredentials();
             });
             #endregion
+
             app.UseRouting();
 
             app.UseAuthorization();

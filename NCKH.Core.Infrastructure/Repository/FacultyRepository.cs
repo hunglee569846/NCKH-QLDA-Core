@@ -103,6 +103,18 @@ namespace NCKH.Core.Infrastructure.Repository
                 return Code;
             }
         }
+        public async Task<FacultyViewModel> SelectByIdFacultyAsync(string IdFaculty)
+        {
+            using (SqlConnection conn = new SqlConnection(_ConnectioString))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+                DynamicParameters para = new DynamicParameters();
+                para.Add("@IdFaculty", IdFaculty);
+                var Code = await conn.QueryFirstAsync<FacultyViewModel>("[spFaculty_SelectByIdFaculty]", para, commandType: CommandType.StoredProcedure);
+                return Code;
+            }
+        }
         public async Task<bool> CheckExitsFacult(string namefaculty)
         {
             using (SqlConnection con = new SqlConnection(_ConnectioString))

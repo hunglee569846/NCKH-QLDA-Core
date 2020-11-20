@@ -27,12 +27,21 @@ namespace QLDA.Core.API.Controllers
             return Ok(result);
         }
         [AcceptVerbs("GET"),Route("GetById/{IdFaculty}")]
-        [SwaggerOperation(Summary = "SelectByID Faculty User", Description = "Requires login verification!", OperationId = "GetByIdFaculty", Tags = new[] { "Faculty" })]
+        [SwaggerOperation(Summary = "SelectByID Department User", Description = "Requires login verification!", OperationId = "GetByIdFaculty", Tags = new[] { "Faculty" })]
         public async Task<IActionResult> SelectById(string IdFaculty)
         {
             var result = await _faculty.SelectById(IdFaculty);
             return Ok(result);
         }
+
+        [AcceptVerbs("GET"), Route("{IdFaculty}")]
+        [SwaggerOperation(Summary = "SelectByID Faculty User", Description = "Requires login verification!", OperationId = "GetByIdFaculty", Tags = new[] { "Faculty" })]
+        public async Task<IActionResult> SelectByIdFaculty(string IdFaculty)
+        {
+            var result = await _faculty.SelectByIdFaculty(IdFaculty);
+            return Ok(result);
+        }
+
         [AcceptVerbs("GET"), Route("GetAll")]
         [SwaggerOperation(Summary = "SelectByID Faculty User", Description = "Requires login verification!", OperationId = "GetAllFaculty", Tags = new[] { "Faculty" })]
         public async Task<IActionResult> SelectAllAsync()
