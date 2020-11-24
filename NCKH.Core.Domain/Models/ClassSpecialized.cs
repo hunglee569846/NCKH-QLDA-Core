@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NCKH.Core.Domain.Models
 {
-    public class Class
+    public class ClassSpecialized
     {
         public string id { get; set; }
         public string IdClass { get; set; }
@@ -16,7 +16,7 @@ namespace NCKH.Core.Domain.Models
         public DateTime? LastUpdate { get; set; }
         public bool IsDelete { get; set; }
         public bool IsActive { get; set; }
-        public Class()
+        public ClassSpecialized()
         {
             Createdate = DateTime.Now;
             LastUpdate = null;

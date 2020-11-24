@@ -94,14 +94,14 @@ namespace NCKH.Core.Infrastructure.Repository
             }
 
         }
-        public async Task<bool> CheckExistByIdSpecialized(string idSpecialized)
+        public async Task<bool> CheckExistByIdSpecialized(string id)
         {
             using (SqlConnection conn = new SqlConnection(_connectionstring))
             {
                 if (conn.State == ConnectionState.Closed)
                     await conn.OpenAsync();
-                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Specializeds WHERE IdSpecialized = @idSpecialized AND IsDelete = 0), 1, 0)";
-                var result = await conn.ExecuteScalarAsync<bool>(sql, new { IdSpecialized = idSpecialized });
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Specializeds WHERE Id = @id AND IsDelete = 0), 1, 0)";
+                var result = await conn.ExecuteScalarAsync<bool>(sql, new { Id= id });
                 return result;
             }
         }
