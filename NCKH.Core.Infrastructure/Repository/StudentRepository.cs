@@ -19,7 +19,7 @@ namespace NCKH.Core.Infrastructure.Repository
         {
             _ConnectioString = Connectionstring;
         }
-        public async Task<StudentDetailViewmodel> SelectByIdAsync(string IdStudent, string NameStudent)
+        public async Task<StudentDetailViewmodel> SelectByIdStudentAsync(string IdStudent, string NameStudent)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
@@ -28,7 +28,7 @@ namespace NCKH.Core.Infrastructure.Repository
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@IdStudent", IdStudent);
                 para.Add("@NameStudent", NameStudent);
-                var Code = await conn.QuerySingleOrDefaultAsync<StudentDetailViewmodel>("[spSearchStudentDetail]", para, commandType: CommandType.StoredProcedure);
+                var Code = await conn.QuerySingleOrDefaultAsync<StudentDetailViewmodel>("[dbo].[spStudent_SearchDetail]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
         }
@@ -58,6 +58,30 @@ namespace NCKH.Core.Infrastructure.Repository
             }
             return rowAffected;
         }
+
+        public async Task<int> UpdateAsync(Students studen)
+        {
+            int rowAffected = 0;
+            using (SqlConnection conn = new SqlConnection(_ConnectioString))
+            {
+                if (conn.State == ConnectionState.Closed)
+                    await conn.OpenAsync();
+
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@Id", studen.id);
+                param.Add("@IdStudent", studen.idStudent);
+                param.Add("@LastName", studen.LastName);
+                param.Add("@Name", studen.Name);
+                param.Add("@Email", studen.Email);
+                param.Add("@IdClass", studen.IdClass);
+                param.Add("@PhoneNumber", studen.PhoneNumber);
+               
+                rowAffected = await conn.ExecuteAsync("[dbo].[spStudent_Update]", param, commandType: CommandType.StoredProcedure);
+            }
+            return rowAffected;
+        }
+
+
         public async Task<List<StudentViewModel>> SelectAllAsync(string idClass)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
@@ -69,6 +93,35 @@ namespace NCKH.Core.Infrastructure.Repository
                 var Result = await conn.QueryAsync<StudentViewModel>("[dbo].[spStuden_SelectAll]", para, commandType: CommandType.StoredProcedure);
                 return Result.ToList();
             }
+
+        }
+        public async Task<Students> GetInfoAsync(string id)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@Id", id);
+                return await con.QuerySingleOrDefaultAsync<Students>("[dbo].[spStuden_SelectByID]", param, commandType: CommandType.StoredProcedure);
+            }
+
+        }
+        public async Task<bool> CheckExistsAsync(string id)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                var sql = @"
+					SELECT IIF (EXISTS (SELECT 1 FROM Student WHERE Id = @Id AND IsDelete = 0), 1, 0)";
+
+                var result = await con.ExecuteScalarAsync<bool>(sql, new { Id = id });
+                return result;
+            }
+
 
         }
     }

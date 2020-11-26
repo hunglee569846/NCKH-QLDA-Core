@@ -22,9 +22,9 @@ namespace NCKH.Core.Infrastructure.Services
             _iclassRepository = iclassRepository;
 
         }
-        public async Task<StudentDetailViewmodel> SelectById(string IdStudent, string NameStudent)
+        public async Task<StudentDetailViewmodel> SelectByIdStudent(string IdStudent, string NameStudent)
         {
-            return await _studentRepository.SelectByIdAsync(IdStudent, NameStudent);
+            return await _studentRepository.SelectByIdStudentAsync(IdStudent, NameStudent);
 
         }
         public async Task<ActionResultReponese<string>> InsertAsync(string idStudent, StudentMeta studentMeta)
@@ -52,6 +52,34 @@ namespace NCKH.Core.Infrastructure.Services
             return new ActionResultReponese<string>(result, "Insert that bai", "Students");
 
         }
+
+        public async Task<ActionResultReponese<string>> UpdateAsync(string id,string idstudent, StudentMeta studenMeta)
+        {
+            var isNameExit = await _studentRepository.CheckExistsAsync(id);
+            if (!isNameExit)
+                return new ActionResultReponese<string>(-4, "Student khong ton tai", "Student");
+            var isIdclass = await _iclassRepository.CheckIdAsync(studenMeta.IdClass);
+            if(!isIdclass)
+                return new ActionResultReponese<string>(-3, "Class khong ton tai", "ClassPecialized");
+
+            var info = await _studentRepository.GetInfoAsync(id);
+            if (info == null)
+                return new ActionResultReponese<string>(-1, "Student khong tim thay", "Student");
+
+            info.id = id.ToString();
+            info.idStudent = idstudent?.Trim();
+            info.LastName = studenMeta.LastName?.Trim();
+            info.Name = studenMeta.Name?.Trim();
+            info.Email = studenMeta.Email?.Trim();
+            info.IdClass = studenMeta.IdClass?.Trim();
+            info.PhoneNumber = studenMeta.PhoneNumber?.Trim();
+       
+            var result = await _studentRepository.UpdateAsync(info);
+            if (result >= 0)
+                return new ActionResultReponese<string>(result, "Update Student thanh cong", "Student");
+            return new ActionResultReponese<string>(result, "Update Student khong thanh cong", "strudent");
+        }
+
         public async Task<List<StudentViewModel>> SelectAllAsync(string idclass)
         {
             return await _studentRepository.SelectAllAsync(idclass);

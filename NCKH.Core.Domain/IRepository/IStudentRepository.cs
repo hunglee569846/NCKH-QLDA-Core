@@ -11,7 +11,10 @@ namespace NCKH.Core.Domain.IRepository
     {
         Task<int> InsertAsync(Students student);
         Task<List<StudentViewModel>> SelectAllAsync(string idClass);
+        Task<StudentDetailViewmodel> SelectByIdStudentAsync(string IdStudent, string NameStudent);
+        Task<int> UpdateAsync(Students studen);
+        Task<Students> GetInfoAsync(string id);
+        Task<bool> CheckExistsAsync(string id);
 
-        Task<StudentDetailViewmodel> SelectByIdAsync(string IdStudent, string NameStudent);
     }
 }
