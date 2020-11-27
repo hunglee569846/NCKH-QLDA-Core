@@ -23,15 +23,15 @@ namespace QLDA.Core.API.Controllers
             _studentService = studentService;
         }
 
-        [Route(" GetByIdNameStudent/IdStudent/NameStudent"), AcceptVerbs("GET")]
+        [Route("GetByIdNameStudent/IdStudent"), AcceptVerbs("GET")]
         [SwaggerOperation(Summary = "Get Student User", Description = "Requires login verification!", OperationId = "Select Student ", Tags = new[] { "Student" })]
-        public async Task<IActionResult> SelectByIdStudent(string IdStudent,string NameStudent)
+        public async Task<IActionResult> SelectByIdStudent(string IdStudent)
         {
-            var result = await _studentService.SelectByIdStudent(IdStudent, NameStudent);
+            var result = await _studentService.SelectByIdStudent(IdStudent);
             return Ok(result);
         }
 
-        [Route(" SelectAllByidclass/{idclass}"), AcceptVerbs("GET")]
+        [Route("SelectAllByidclass/{idclass}"), AcceptVerbs("GET")]
         [SwaggerOperation(Summary = "Get Student by idclass User", Description = "Requires login verification!", OperationId = "SelectAll Byiclass Student ", Tags = new[] { "Student" })]
         public async Task<IActionResult> SelectAllAsync(string idclass)
         {
@@ -39,18 +39,27 @@ namespace QLDA.Core.API.Controllers
             return Ok(result);
         }
 
-        [Route(" Insert/{idStudent}"), AcceptVerbs("POST")]
+        [Route("Insert/{idStudent}"), AcceptVerbs("POST")]
         [SwaggerOperation(Summary = "Get Student User", Description = "Requires login verification!", OperationId = "Insert Student ", Tags = new[] { "Student" })]
         public async Task<IActionResult> InsertAsync(string idStudent, StudentMeta nameStudent)
         {
             var result = await _studentService.InsertAsync(idStudent, nameStudent);
             return Ok(result);
         }
-        [Route(" Update/{id}/{idStudent}"), AcceptVerbs("PUT")]
+
+        [Route("Update/{id}/{idStudent}"), AcceptVerbs("PUT")]
         [SwaggerOperation(Summary = "Update Student User", Description = "Requires login verification!", OperationId = "Update Student ", Tags = new[] { "Student" })]
         public async Task<IActionResult> UpdateAsync(string id,string idStudent, StudentMeta nameStudent)
         {
             var result = await _studentService.UpdateAsync(id,idStudent, nameStudent);
+            return Ok(result);
+        }
+
+        [Route("Delete/{id}/{idStudent}"), AcceptVerbs("DELETE")]
+        [SwaggerOperation(Summary = "Delete Student User", Description = "Requires login verification!", OperationId = "Delete Student ", Tags = new[] { "Student" })]
+        public async Task<IActionResult> DeleteAsync(string id, string idStudent)
+        {
+            var result = await _studentService.DeleteAsync(id, idStudent);
             return Ok(result);
         }
     }

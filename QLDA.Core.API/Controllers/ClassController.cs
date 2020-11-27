@@ -43,7 +43,7 @@ namespace QLDA.Core.API.Controllers
         }
 
 
-        [AcceptVerbs("PUT"), Route("Update/{id}/{idClass}-{className}")]
+        [AcceptVerbs("PUT"), Route("Update/{id}/{idClass}/{className}")]
         [SwaggerOperation(Summary = "Update Department User", Description = "Requires login verification!", OperationId = "Update-ClasSpecialized", Tags = new[] { "ClasSpecialized" })]
         public async Task<IActionResult> UpdateAsync(string id, string idClass,string className, ClassMeta clas)
         {

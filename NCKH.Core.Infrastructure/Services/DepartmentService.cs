@@ -77,7 +77,7 @@ namespace NCKH.Core.Infrastructure.Services
         }
         public async Task<ActionResultReponese<string>> UpdateAsync(string IdDepartment, DepartmentMeta department)
         {
-            var idfaculty = await _facultyRepository.CheckExitsFacult(department.IdFaculty);
+            var idfaculty = await _facultyRepository.CheckExitsIdFacult(department.IdFaculty);
             if (!idfaculty)
                 return new ActionResultReponese<string>(-21, "khoa khong ton tai", "Faculty");
             var _department = new Department

@@ -10,10 +10,12 @@ namespace NCKH.Core.Domain.IServices
 {
     public interface IStudentService
     {
-        Task<StudentDetailViewmodel> SelectByIdStudent(string IdStudent, string NameStudent);
+        Task<StudentDetailViewmodel> SelectByIdStudent(string IdStudent);
         Task<ActionResultReponese<string>> InsertAsync(string idStudent, StudentMeta studentMeta);
         Task<List<StudentViewModel>> SelectAllAsync(string idclass);
         Task<ActionResultReponese<string>> UpdateAsync(string id, string idstudent, StudentMeta studenMeta);
+        Task<ActionResultReponese> DeleteAsync(string id, string idStudent);
+
 
     }
 }

@@ -19,7 +19,7 @@ namespace NCKH.Core.Infrastructure.Repository
         {
             _ConnectioString = Connectionstring;
         }
-        public async Task<StudentDetailViewmodel> SelectByIdStudentAsync(string IdStudent, string NameStudent)
+        public async Task<StudentDetailViewmodel> SelectByIdStudentAsync(string IdStudent)
         {
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
@@ -27,7 +27,6 @@ namespace NCKH.Core.Infrastructure.Repository
                     await conn.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@IdStudent", IdStudent);
-                para.Add("@NameStudent", NameStudent);
                 var Code = await conn.QuerySingleOrDefaultAsync<StudentDetailViewmodel>("[dbo].[spStudent_SearchDetail]", para, commandType: CommandType.StoredProcedure);
                 return Code;
             }
@@ -121,7 +120,34 @@ namespace NCKH.Core.Infrastructure.Repository
                 var result = await con.ExecuteScalarAsync<bool>(sql, new { Id = id });
                 return result;
             }
+        }
+        public async Task<bool> CheckIstudentAsync(string idstudent)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
 
+                var sql = @"
+					SELECT IIF (EXISTS (SELECT 1 FROM dbo.Student WHERE IdStudent = @idstudent AND IsDelete = 0), 1, 0)";
+
+                var result = await con.ExecuteScalarAsync<bool>(sql, new { IdStudent = idstudent });
+                return result;
+            }
+        }
+        public async Task<int> DeleteAsync(string id)
+        {
+            int rowAffected = 0;
+            using (SqlConnection con = new SqlConnection(_ConnectioString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@Id", id);
+                rowAffected = await con.ExecuteAsync("[dbo].[spStuden_DeleteByID]", param, commandType: CommandType.StoredProcedure);
+            }
+            return rowAffected;
 
         }
     }
