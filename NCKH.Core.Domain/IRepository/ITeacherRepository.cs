@@ -17,6 +17,7 @@ namespace NCKH.Core.Domain.IRepository
         Task<SearchResult<TeacherViewModel>> SelectByIdDepartmentAsync(string idDepartment);
         Task<List<TeacherViewModel>> SelectAllAsync();
         Task<bool> CheckCountTopicsAsync(string id);
+        Task<GetInforTeacherViewMode> GetInfoAsync(string id);
 
     }
 }

@@ -12,5 +12,7 @@ namespace NCKH.Core.Domain.IRepository
         Task<int> ConfirmTopics(string idTopics);
         Task<int> InsertAsync(Topics topic);
         Task<List<TopicsViewModel>> SelectAllAsync();
+        Task<bool> CheckExisId(string id);
+        Task<bool> CheckExisName(string nameTopics);
     }
 }

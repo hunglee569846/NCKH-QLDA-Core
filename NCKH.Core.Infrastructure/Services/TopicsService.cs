@@ -27,19 +27,25 @@ namespace NCKH.Core.Infrastructure.Services
 		public async Task<ActionResultReponese<string>> InsertAsync(string idStudent, string idTeacherMain, TopicsMeta topicsMeta)
         {
 			var topicId = Guid.NewGuid().ToString();
+			var isName = await _topicsRepository.CheckExisName(topicsMeta.NameTopics);
+			if (isName)
+				return new ActionResultReponese<string>(-2, "NameTopics da ton tai", "Topics");
 
-            var isTeacher = await _teacherRepository.CheckExistsAsync(idTeacherMain);
+			var isTeacher = await _teacherRepository.CheckExistsAsync(idTeacherMain);
             if (!isTeacher)
                 return new ActionResultReponese<string>(-2, "TeacherMain khong ton tai", "Teacher");
+			var infotecherMain = await _teacherRepository.GetInfoAsync(idTeacherMain);
 
 			// check giang vien full de tai chua
 			var isTopicsFullExit = await _teacherRepository.CheckCountTopicsAsync(idTeacherMain);
 			if (!isTopicsFullExit)
 				return new ActionResultReponese<string>(-2, "IdTeacher full de tai", "Teacher");
+			var infotecher2 = await _teacherRepository.GetInfoAsync(topicsMeta.IdTeacher2);
 
 			var isStudent = await _studentRepository.CheckExistsAsync(idStudent);
 			if (!isStudent)
 				return new ActionResultReponese<string>(-2, "Student khong ton tai", "Student");
+			var infostuddent = await _studentRepository.GetInfoAsync(idStudent);
 
 			var topic = new Topics
 			{
@@ -47,8 +53,11 @@ namespace NCKH.Core.Infrastructure.Services
 				IdTopics = topicsMeta.IdTopics?.Trim(),
 				NameTopics = topicsMeta.NameTopics?.Trim(),
 				IdStudent = idStudent?.Trim(),
+				NameStudent = infostuddent.Name?.Trim(),
 				IdTeacherMain = idTeacherMain?.Trim(),
+				NameTeacherMain = infotecherMain.NameTeacher?.Trim(),
 				IdTeacher2 = topicsMeta.IdTeacher2?.Trim(),
+				NameTeacher2 = infotecher2.NameTeacher?.Trim(),
 				IsApproval = false,
 				IsActive = true,
 				IsDelete = false,

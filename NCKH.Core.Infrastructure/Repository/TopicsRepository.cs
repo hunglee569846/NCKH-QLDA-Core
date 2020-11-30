@@ -33,8 +33,11 @@ namespace NCKH.Core.Infrastructure.Repository
 				param.Add("@IdTopics", topic.IdTopics);
 				param.Add("@NameTopics", topic.NameTopics);
 				param.Add("@IdStudent", topic.IdStudent);
+				param.Add("@NameStudent", topic.NameStudent);
 				param.Add("@IdTeacherMain", topic.IdTeacherMain);
+				param.Add("@NameTeacherMain", topic.NameTeacherMain);
 				param.Add("@IdTeacher2", topic.IdTeacher2);
+				param.Add("@NameTeacher2", topic.NameTeacher2);
 				param.Add("@IsApproval", topic.IsApproval);
 				param.Add("@CreateDate", topic.CreateDate);
 				param.Add("@LastUpdate", topic.LastUpdate);
@@ -54,7 +57,7 @@ namespace NCKH.Core.Infrastructure.Repository
 					await con.OpenAsync();
 
 				DynamicParameters param = new DynamicParameters();
-				param.Add("@Id", idTopics);
+				param.Add("@idTopics", idTopics);
 				rowAffected = await con.ExecuteAsync("[dbo].[spTopics_ConfirmTopics]", param, commandType: CommandType.StoredProcedure);
 			}
 			return rowAffected;
@@ -71,6 +74,32 @@ namespace NCKH.Core.Infrastructure.Repository
 				return results.ToList();
 			}
 
+		}
+		public async Task<bool> CheckExisId(string id)
+		{
+			using (SqlConnection conn = new SqlConnection(_ConnectionString))
+			{
+				if (conn.State == ConnectionState.Closed)
+					await conn.OpenAsync();
+				var sql = @"
+					SELECT IIF (EXISTS (SELECT 1 FROM dbo.Topics WHERE IdTopics = @id AND IsDelete = 0 AND IsDelete =0), 1, 0)";
+
+				var result = await conn.ExecuteScalarAsync<bool>(sql, new { Id = id });
+				return result;
+			}
+		}
+		public async Task<bool> CheckExisName(string nameTopics)
+        {
+			using (SqlConnection conn = new SqlConnection(_ConnectionString))
+			{
+				if (conn.State == ConnectionState.Closed)
+					await conn.OpenAsync();
+				var sql = @"
+					SELECT IIF (EXISTS (SELECT 1 FROM dbo.Topics WHERE NameTopics = @nameTopics AND IsDelete = 0 AND IsDelete =0), 1, 0)";
+
+				var result = await conn.ExecuteScalarAsync<bool>(sql, new { NameTopics = nameTopics });
+				return result;
+			}
 		}
 
 	}

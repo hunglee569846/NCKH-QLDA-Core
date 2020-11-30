@@ -137,6 +137,18 @@ namespace NCKH.Core.Infrastructure.Repository
 
             }
         }
+        public async Task<GetInforTeacherViewMode> GetInfoAsync(string id)
+        {
+            using (SqlConnection con = new SqlConnection(_ConnectionString))
+            {
+                if (con.State == ConnectionState.Closed)
+                    await con.OpenAsync();
+
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@Id", id);
+                return await con.QuerySingleOrDefaultAsync<GetInforTeacherViewMode>("[dbo].[spTeacher_SelectByID]", param, commandType: CommandType.StoredProcedure);
+            }
+        }
 
     }
 }
