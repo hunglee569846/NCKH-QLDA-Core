@@ -26,6 +26,7 @@ namespace QLDA.Core.API.Controllers
             var result = await _faculty.InsertAsync(facultyMeta);
             return Ok(result);
         }
+
         [AcceptVerbs("GET"),Route("GetById/{IdFaculty}")]
         [SwaggerOperation(Summary = "SelectByID Department User", Description = "Requires login verification!", OperationId = "GetByIdFaculty", Tags = new[] { "Faculty" })]
         public async Task<IActionResult> SelectById(string IdFaculty)

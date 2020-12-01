@@ -150,5 +150,14 @@ namespace NCKH.Core.Infrastructure.Repository
             return rowAffected;
 
         }
+        /// <summary>
+        /// insert ds sinh vieen
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        //public async Task<int> InsertListAsync(Students student)
+        //{
+
+        //}
     }
 }

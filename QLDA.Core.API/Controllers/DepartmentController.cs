@@ -44,6 +44,20 @@ namespace QLDA.Core.API.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// //them bang fileExcel conf chinh sua duong dan lay file
+        /// </summary>
+        /// <param name="NameFaculty"></param>
+        /// <returns></returns>
+        [AcceptVerbs("POST"), Route("Department/{NameFaculty}")]
+        [SwaggerOperation(Summary = "Insert Department User", Description = "Requires login verification!", OperationId = "Insert Department", Tags = new[] { "Department" })]
+        public async Task<IActionResult> InsertListExcel(string NameFaculty)
+        {
+            var result = await _department.InsertListExcelAsync(NameFaculty);
+            return Ok(result);
+        }
+
+
         [AcceptVerbs("POST"),Route("{NameFaculty}")]
         [SwaggerOperation(Summary = "Insert Department User", Description = "Requires login verification!", OperationId = "InsertFaculty", Tags = new[] { "Department" })]
         public async Task<IActionResult> InsertAsync(string NameFaculty,[FromBody] DepartmentMeta departmentMeta)
