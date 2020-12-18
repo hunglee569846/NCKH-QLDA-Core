@@ -75,7 +75,7 @@ namespace NCKH.Core.Infrastructure.Repository
 			}
 
 		}
-		public async Task<bool> CheckExisId(string id)
+		public async Task<bool> CheckExisIdTopic(string id)
 		{
 			using (SqlConnection conn = new SqlConnection(_ConnectionString))
 			{
@@ -88,6 +88,20 @@ namespace NCKH.Core.Infrastructure.Repository
 				return result;
 			}
 		}
+		public async Task<bool> CheckExisId(string id)
+		{
+			using (SqlConnection conn = new SqlConnection(_ConnectionString))
+			{
+				if (conn.State == ConnectionState.Closed)
+					await conn.OpenAsync();
+				var sql = @"
+					SELECT IIF (EXISTS (SELECT 1 FROM dbo.Topics WHERE Id = @id AND IsDelete = 0 AND IsDelete =0), 1, 0)";
+
+				var result = await conn.ExecuteScalarAsync<bool>(sql, new { Id = id });
+				return result;
+			}
+		}
+
 		public async Task<bool> CheckExisName(string nameTopics)
         {
 			using (SqlConnection conn = new SqlConnection(_ConnectionString))

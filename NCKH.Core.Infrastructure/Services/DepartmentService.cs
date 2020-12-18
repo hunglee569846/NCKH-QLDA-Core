@@ -176,8 +176,8 @@ namespace NCKH.Core.Infrastructure.Services
                         dem++;
                 }
                 if(dem >0)
-                    return new ActionResultReponese<string>(-5, "them thanh cong", "Department", null);
-                return new ActionResultReponese<string>(dem, "them that bai", "Department", null);
+                    return new ActionResultReponese<string>(dem, "them thanh cong", "Department", null);
+                return new ActionResultReponese<string>(-5, "them that bai", "Department", null);
 
             }
 
