@@ -17,7 +17,7 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
         {
             _ConnectionString = ConnectionString;
         }
-        public async Task<int> InsertAsync(string IdPath,string FolderName, int FolderId, Folder folder)
+        public async Task<int> InsertAsync(string FolderName, int FolderId, Folder folder)
         {
             int rowaffaceted = 0;
             using (SqlConnection con = new SqlConnection(_ConnectionString))
@@ -26,7 +26,6 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                     await con.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
                 para.Add("@FolderName", FolderName);
-                para.Add("@IdPath", IdPath);
                 para.Add("@NamePath", folder.NamePath);
                 para.Add("@FolderId", FolderId);
                 para.Add("@Level", folder.Level);
@@ -34,7 +33,6 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                 para.Add("@Description", folder.Description);
                 if (folder.CreateTime != null && folder.CreateTime != DateTime.MinValue)
                 {
-
                     para.Add("@createTime", folder.CreateTime);
                 }
                 para.Add("@lastUpdate", folder.LastUpdate);
@@ -45,7 +43,7 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                 }
                 para.Add("IsDelete", folder.IsDelete);
                 para.Add("@IsActive", folder.IsActive);
-                rowaffaceted = await con.ExecuteAsync("[spInsertFolder]", para, commandType: CommandType.StoredProcedure);
+                rowaffaceted = await con.ExecuteAsync("[dbo].[spFolder_Insert]", para, commandType: CommandType.StoredProcedure);
             }
             return rowaffaceted;
         }
@@ -57,22 +55,21 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                 if (con.State == ConnectionState.Closed)
                     await con.OpenAsync();
 
-                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Folders WHERE FolderId =@folderId  AND IsDelete = 0), 1, 0)";
+                var sql = @"SELECT IIF (EXISTS (SELECT 1 FROM dbo.Folder WHERE FolderId =@folderId  AND IsDelete = 0), 1, 0)";
 
                 var result = await con.ExecuteScalarAsync<bool>(sql, new { FolderId = folderId });
                 return result;
             }
         }
-        public async Task<Folder> GetInfoAsync(string FolderName, int FolderId)
+        public async Task<Folder> GetInfoAsync(int FolderId)
         {
             using (SqlConnection con = new SqlConnection(_ConnectionString))
             {
                 if (con.State == ConnectionState.Closed)
                     await con.OpenAsync();
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@FolderName", FolderName);
                 param.Add("@FolderId", FolderId);
-                return await con.QuerySingleOrDefaultAsync<Folder>("[dbo].[spSelectFolderById]", param, commandType: CommandType.StoredProcedure);
+                return await con.QuerySingleOrDefaultAsync<Folder>("[dbo].[spFolder_SelectById]", param, commandType: CommandType.StoredProcedure);
             }
         }
     }

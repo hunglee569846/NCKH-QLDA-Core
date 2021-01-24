@@ -1,4 +1,5 @@
-﻿namespace NCKH.Core.Domain.ViewModel
+﻿
+namespace NCKH.Core.Domain.ViewModel
 {
     public class DepartmentByIdViewModel
     {

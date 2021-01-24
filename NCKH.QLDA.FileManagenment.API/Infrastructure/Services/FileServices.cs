@@ -37,14 +37,14 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
            return await _fileRepository.SelectAllAsync(FileName, FolderId);
         }
 
-        public async Task<ActionResultReponese<List<FileViewModel>>> UploadFiles(string IdFile,string FileName, string creatorId, string FolderName, int? folderId, IFormFileCollection formFileCollection)
+        public async Task<ActionResultReponese<List<FileViewModel>>> UploadFiles(string FileCode,string FileName, string creatorId, string FolderName, int? folderId, IFormFileCollection formFileCollection)
         {
             List<Files> listFiles = new List<Files>();
             string uploadUrl = string.Format("/uploads/" + FolderName + "/{0:yyyy/MM/dd}/", DateTime.Now);
             Folder folderInfo = null;
             if (folderId.HasValue)
             {
-                folderInfo = await _folderRepository.GetInfoAsync(FolderName, folderId.Value);
+                folderInfo = await _folderRepository.GetInfoAsync(folderId.Value);
                 if (folderInfo == null)
                     return new ActionResultReponese<List<FileViewModel>>(-1, "Folder does not exists. You can not update file to this folder.");
                 //_ghmFileResource.GetString("Folder does not exists. You can not update file to this folder."));
@@ -60,7 +60,7 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
                 var type = formFile.GetTypeFile();
                 var isImage = type.Contains("image/");
 
-                var isNameExit = await _fileRepository.CheckExistsByFolderIdName(IdFile,folderId,formFile.FileName?.Trim());
+                var isNameExit = await _fileRepository.CheckExistsByFolderIdName(id, folderId,formFile.FileName?.Trim());
                 if (isNameExit)
                     continue;
 
@@ -71,7 +71,8 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
 
                 var file = new Files
                 {
-                    IdFile = id,
+                    Id = id,
+                    FileCode = FileCode,
                     FileName = formFile.FileName?.Trim().StripVietnameseChars().ToUpper(),
                     Type = formFile.GetTypeFile(),
                     Size = formFile.GetFileSize(),
@@ -90,7 +91,6 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
                 await _fileRepository.InsertAsync(file);
                 listFiles.Add(file);
             }
-
 
             return new ActionResultReponese<List<FileViewModel>>
             {

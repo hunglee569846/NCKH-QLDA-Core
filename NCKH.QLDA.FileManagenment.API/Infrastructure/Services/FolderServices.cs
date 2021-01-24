@@ -18,16 +18,15 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
             _iFolderRepository = iFolderRepository;
         }
 
-        public async Task<ActionResultReponese<string>> InsertAsync(string IdPath,string FolderName,int folderId, FolderMeta folderMeta)
+        public async Task<ActionResultReponese<string>> InsertAsync(string FolderName,int folderId, FolderMeta folderMeta)
         {
             var isFolderID = await _iFolderRepository.CheckExitsFolder(folderId);
-            if (isFolderID == true)
+            if (isFolderID)
                 return new ActionResultReponese<string>(-21, "FolderId already exists", "Folder", null);
             var folder = new Folder()
             {
                 FolderId = folderId,
                 FolderName = FolderName,
-                IdPath = IdPath,
                 NamePath = folderMeta.NamePath?.Trim(),
                 Level = folderMeta.Level,
                 ChildCount = folderMeta.ChildCount,
@@ -38,10 +37,10 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Services
                 IsActive = true,
                 IsDelete = false,
             };
-            var Row = await _iFolderRepository.InsertAsync(IdPath, FolderName, folderId, folder);
-            if (Row <= 0)
+            var result = await _iFolderRepository.InsertAsync(FolderName, folderId, folder);
+            if (result <= 0)
                 return new ActionResultReponese<string>(-1, "Insert False", "Folder", null);
-            return new ActionResultReponese<string>(Row, "Insert Succsec", "Folder", null);
+            return new ActionResultReponese<string>(result, "Insert Success", "Folder", null);
         }
     }
 }

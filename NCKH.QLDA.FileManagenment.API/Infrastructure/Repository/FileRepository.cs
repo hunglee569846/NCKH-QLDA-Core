@@ -70,10 +70,11 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                 if (con.State == ConnectionState.Closed)
                     await con.OpenAsync();
                 DynamicParameters para = new DynamicParameters();
-                para.Add("@IdFile", file.IdFile);
+                para.Add("@Id", file.Id);
+                para.Add("@FileCode", file.FileCode);
                 para.Add("@FileName", file.FileName);
                 para.Add("@Type", file.Type);
-                para.Add("@Size ", file.Size);
+                para.Add("@Size", file.Size);
                 para.Add("@Url", file.Url);
                 para.Add("@FolderId", file.Folderld);
                 para.Add("@CreateorId", file.CreatorId);
@@ -91,12 +92,12 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                 }
                 para.Add("@IsDelete", file.IsDelete);
                 para.Add("@IsActive", file.IsActive);
-                var code = await con.ExecuteAsync("[SpInsertFiles]", para, commandType: CommandType.StoredProcedure);
+                var code = await con.ExecuteAsync("[dbo].[SpFiles_Insert]", para, commandType: CommandType.StoredProcedure);
                 return code;
             }
 
         }
-        public async Task<bool> CheckExistsByFolderIdName(string Idfile, int? folderId, string fileName)
+        public async Task<bool> CheckExistsByFolderIdName(string id, int? folderId, string fileName)
         {
             try
             {
@@ -106,9 +107,9 @@ namespace NCKH.QLDA.FileManagenment.API.Infrastructure.Repository
                         await con.OpenAsync();
 
                     var sql = @"
-					SELECT IIF (EXISTS (SELECT 1 FROM Files WHERE IdFile != @IdFile AND ISNULL(FolderId,0) = ISNULL(@folderId,0) AND IsDelete = 0 AND FileName = @FileName), 1, 0)";
+					SELECT IIF (EXISTS (SELECT 1 FROM Files WHERE Id != @Id AND ISNULL(FolderId,0) = ISNULL(@folderId,0) AND IsDelete = 0 AND FileName = @FileName), 1, 0)";
 
-                    var result = await con.ExecuteScalarAsync<bool>(sql, new { IdFile = Idfile, FolderId = folderId, FileName = fileName });
+                    var result = await con.ExecuteScalarAsync<bool>(sql, new { Id = id, FolderId = folderId, FileName = fileName });
                     return result;
                 }
 

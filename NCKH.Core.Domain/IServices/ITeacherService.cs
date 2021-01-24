@@ -11,7 +11,7 @@ namespace NCKH.Core.Domain.IServices
 {
     public interface ITeacherService
     {
-        Task<ActionResultReponese<string>> InsertAsync(string idTeacher, string idDepartment,TeacherMeta teacherMeta);
+        Task<ActionResultReponese<string>> InsertAsync(string idTeacher, string idDepartment, TeacherMeta teacherMeta);
         Task<SearchResult<TeacherViewModel>> SelectbyIdDepartmentAsync(string idDepartment);
         Task<List<TeacherViewModel>> SelectAllAsync();
     }

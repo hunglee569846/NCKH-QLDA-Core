@@ -18,11 +18,11 @@ namespace NCKH.QLDA.FileManagenment.API.Controllers
             _folderService = folderservice;
         }
 
-        [Route("Insert/{IdPath}/{FolderName}/{FolderId}"), AcceptVerbs("POST")]
+        [Route("Insert/{FolderName}/{FolderId}"), AcceptVerbs("POST")]
         [SwaggerOperation(Summary = "Insert information folder.", Description = "Requires login verification!", OperationId = "InsertFolder", Tags = new[] { "Folder" })]
-        public async Task<IActionResult> InsertAsync(string IdPath, string FolderName,int FolderId, [FromBody] FolderMeta folderMeta)
+        public async Task<IActionResult> InsertAsync(string FolderName,int FolderId, [FromBody] FolderMeta folderMeta)
         {
-            var result = await _folderService.InsertAsync(IdPath, FolderName, FolderId, folderMeta);
+            var result = await _folderService.InsertAsync(FolderName, FolderId, folderMeta);
             if (result.Code <= 0)
                 return BadRequest(result);
             return Ok(result);

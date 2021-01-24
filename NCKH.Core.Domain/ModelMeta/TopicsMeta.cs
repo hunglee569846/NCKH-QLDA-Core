@@ -9,6 +9,6 @@ namespace NCKH.Core.Domain.ModelMeta
         public string IdTopics { get; set; }
         public string NameTopics { get; set; }
         public string IdTeacher2 { get; set; }
-       
+
     }
 }

@@ -11,5 +11,6 @@ namespace NCKH.Core.Domain.IRepository
     {
         Task<List<ViewRegistTeacher>> SelectAllAsync();
         Task<int> InsertAsync(RegistTeacher registtecher);
+        // Task<int> UpdateAsync(RegistTeacher registtecher);
     }
 }

@@ -21,9 +21,10 @@ namespace NCKH.Core.Infrastructure.Repository
         }
         public async Task<List<DepartmentViewModel>> SelectAllAsync()
         {
+
             using (SqlConnection conn = new SqlConnection(_ConnectioString))
             {
-                if (conn.State == ConnectionState.Closed)
+                if (conn.State == ConnectionState.Closed) 
                     await conn.OpenAsync();
                 var Result = await conn.QueryAsync<DepartmentViewModel>("[spDepartment_SelectAll]");
                 return Result.ToList();

@@ -12,6 +12,6 @@ namespace NCKH.Core.Domain.IServices
     {
         Task<ActionResultReponese<string>> Confirm(string id);
         Task<List<TopicsViewModel>> SelectAllAsync();
-        Task<ActionResultReponese<string>> InsertAsync(string isStudent, string idTeacherMain,TopicsMeta topicsMeta);
+        Task<ActionResultReponese<string>> InsertAsync(string isStudent, string idTeacherMain, TopicsMeta topicsMeta);
     }
 }

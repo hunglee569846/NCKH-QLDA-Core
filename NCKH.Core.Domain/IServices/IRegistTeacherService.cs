@@ -11,6 +11,6 @@ namespace NCKH.Core.Domain.IServices
     public interface IRegistTeacherService
     {
         Task<List<ViewRegistTeacher>> SelectAll();
-        Task<ActionResultReponese<string>> InsertAsync(string IdStudent, string IdTeacherMain, string IdTeacher2,string IdTopic);
+        Task<ActionResultReponese<string>> InsertAsync(string IdStudent, string IdTeacherMain, string IdTeacher2, string IdTopic);
     }
 }

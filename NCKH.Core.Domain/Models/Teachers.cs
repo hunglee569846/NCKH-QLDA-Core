@@ -15,11 +15,11 @@ namespace NCKH.Core.Domain.Model
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public int CountTopics { get; set; }
-        public DateTime CreateDate{ get; set; }
-        public DateTime? LastUpdate{ get; set; }
-        public bool IsTopicsFull{ get; set; }
-        public bool IsActive{ get; set; }
-        public bool IsDelete{ get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime? LastUpdate { get; set; }
+        public bool IsTopicsFull { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDelete { get; set; }
         public Teachers()
         {
             CreateDate = DateTime.Now;

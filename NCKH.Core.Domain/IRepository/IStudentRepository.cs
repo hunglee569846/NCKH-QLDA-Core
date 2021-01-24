@@ -10,7 +10,7 @@ namespace NCKH.Core.Domain.IRepository
     public interface IStudentRepository
     {
         Task<int> InsertAsync(Students student);
-       // Task<int> InsertListAsync(Students student);
+        // Task<int> InsertListAsync(Students student);
         Task<List<StudentViewModel>> SelectAllAsync(string idClass);
         Task<StudentDetailViewmodel> SelectByIdStudentAsync(string IdStudent);
         Task<int> UpdateAsync(Students studen);

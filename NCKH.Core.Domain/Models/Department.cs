@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace NCKH.Core.Domain.Models
 {
     public class Department
@@ -8,7 +9,7 @@ namespace NCKH.Core.Domain.Models
         public string Office { get; set; }
         public string Addres { get; set; }
         public string Email { get; set; }
-        public string  PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string IdFaculty { get; set; }
         public DateTime? CreateDate { get; set; }
         public bool IsDelete { get; set; }
